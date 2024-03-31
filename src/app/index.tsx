@@ -1,11 +1,11 @@
 import { router } from "expo-router";
 import { Image, Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { createTables } from "@/lib/datasource";
-import UserService from "@/services/user.services";
 import globalStyles from "@/styles/globalStyles";
 import { useEffect } from "react";
 import { useAppDispatch } from "@/hooks/redux.hooks";
 import { userChecking } from "@/features/user/userSlice";
+import * as FileSystem from 'expo-file-system';
 
 function LoadingIndexPage() {
   const debug = false;
@@ -21,7 +21,17 @@ function LoadingIndexPage() {
     }
   }
 
+  const deleteDatabase = async () => {
+    try {
+      await FileSystem.deleteAsync(FileSystem.documentDirectory + 'SQLite/budget-app.sqlite');
+      console.log("Base de données supprimée avec succès.");
+    } catch (error) {
+      console.error("Erreur lors de la suppression de la base de données :", error);
+    }
+  };
+
   const initApp = async () => {
+    console.log(Date.now());
     // First create tables
     createTables();
 
@@ -66,6 +76,9 @@ function LoadingIndexPage() {
         <Text>check if a user exist</Text>
         <Text>- yes ? go dashboard</Text>
         <Text>- no ? go login</Text>
+        <Pressable onPress={() => deleteDatabase()}>
+          <Text style={{color: 'red'}}>delete database</Text>
+        </Pressable>
       </View>
     );
   } else {

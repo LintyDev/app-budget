@@ -23,27 +23,52 @@ export const createTables = () => {
       subcat TEXT DEFAULT null,
       amountAllocated NUMERIC DEFAULT null,
       currentAmount NUMERIC NOT NULL,
-      recursive NUMERIC NOT NULL
+      accountId INTEGER NOT NULL,
+      FOREIGN KEY(accountId) REFERENCES Accounts(id)
     )
   `;
 
   const transactionTable = `
     CREATE TABLE IF NOT EXISTS TransactionTable (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
+      description TEXT NOT NULL,
       amount NUMERIC NOT NULL,
-      date NUMERIC NOT NULL,
+      date TEXT NOT NULL,
       type TEXT NOT NULL,
       categoryId INTEGER NOT NULL,
       FOREIGN KEY(categoryId) REFERENCES Category(id)
     )
   `;
 
+  const monthyTransaction = `
+    CREATE TABLE IF NOT EXISTS MonthlyTransaction (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      description TEXT NOT NULL,
+      amount NUMERIC NOT NULL,
+      categoryId INTEGER NOT NULL,
+      FOREIGN KEY(categoryId) REFERENCES Category(id)
+    )
+  `;
+
+  const accountsTable = `
+    CREATE TABLE IF NOT EXISTS Accounts (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      currentAmount NUMERIC NOT NULL,
+      initalAmount NUMERIC NOT NULL,
+      currentMonthYear TEXT NOT NULL,
+      countCategories NUMERIC DEFAULT 0
+    )
+  `;
+
   const monthlyBalanceTable = `
     CREATE TABLE IF NOT EXISTS MonthlyBalance (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      month TEXT NOT NULL,
-      initialAmount NUMERIC NOT NULL,
-      currentAmount NUMERIC NOT NULL
+      monthYear TEXT NOT NULL,
+      amount NUMERIC NOT NULL,
+      recursive NUMERIC NOT NULL,
+      accountId INTEGER NOT NULL,
+      FOREIGN KEY(accountId) REFERENCES Accounts(id)
     )
   `;
 
@@ -57,7 +82,7 @@ export const createTables = () => {
       },
       (_, error)  => {
         console.log('User table not created', error);
-        return false;
+        return true;
       }
     );
 
@@ -65,11 +90,11 @@ export const createTables = () => {
       categoryTable,
       [],
       () => {
-      console.log("category table created");
+      console.log("Category table created");
       },
       (_, error)  => {
-        console.log('category table not created', error);
-        return false;
+        console.log('Category table not created', error);
+        return true;
       }
     );
 
@@ -77,11 +102,23 @@ export const createTables = () => {
       transactionTable,
       [],
       () => {
-      console.log("transaction table created");
+      console.log("Transaction table created");
       },
       (_, error)  => {
-        console.log('transaction table not created', error);
-        return false;
+        console.log('Transaction table not created', error);
+        return true;
+      }
+    );
+
+    tx.executeSql(
+      accountsTable,
+      [],
+      () => {
+      console.log("accountsTable table created");
+      },
+      (_, error)  => {
+        console.log('accountsTable table not created', error);
+        return true;
       }
     );
 
@@ -89,11 +126,11 @@ export const createTables = () => {
       monthlyBalanceTable,
       [],
       () => {
-      console.log("monthlybalance table created");
+      console.log("monthlyBalance table created");
       },
       (_, error)  => {
-        console.log('monthlybalance table not created', error);
-        return false;
+        console.log('monthlyBalance table not created', error);
+        return true;
       }
     );
   });
