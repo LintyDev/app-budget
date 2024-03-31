@@ -3,7 +3,7 @@ import { InputUser, UserState } from "@/types/user";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState: UserState = {
-  name: "test",
+  name: null,
   avatarId: null
 }
 
@@ -44,7 +44,6 @@ export const userSlice = createSlice({
       if (action.payload) {
         state.name = action.payload.name;
         state.avatarId = action.payload.avatarId;
-        console.log('check good 2', state);
       } else {
         state.name = null;
         state.avatarId = null;

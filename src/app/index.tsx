@@ -25,6 +25,7 @@ function LoadingIndexPage() {
     // First create tables
     createTables();
 
+    // check if an user exist
     try {
       const check = await dispatch(userChecking());
       if (check.payload) {
@@ -34,7 +35,7 @@ function LoadingIndexPage() {
         router.replace("/login/");
       }
     } catch (error) {
-      
+      console.error(error);
     }
   }
 
