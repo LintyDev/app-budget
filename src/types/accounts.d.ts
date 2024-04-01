@@ -1,3 +1,4 @@
+// Type Account
 export interface Account {
   id: number;
 
@@ -7,7 +8,7 @@ export interface Account {
 
   initalAmount: number;
 
-  currentMonthYear: number;
+  currentMonthYear: string;
 
   countCategories: number;
 }
@@ -23,9 +24,26 @@ export interface AccountState {
 
   initalAmount?: number;
 
-  currentMonthYear?: number;
+  currentMonthYear?: string;
 
   countCategories?: number;
 }
+
+// Type Income
+export interface Income {
+  id: number;
+
+  description: string;
+
+  monthYear: string;
+
+  amount: number;
+
+  recursive: number;
+
+  accountId: number;
+}
+
+export interface InputIncome extends Omit<Income, "id"> {}
 
 export default Account;

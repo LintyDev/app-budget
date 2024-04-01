@@ -64,6 +64,7 @@ export const createTables = () => {
   const monthlyBalanceTable = `
     CREATE TABLE IF NOT EXISTS MonthlyBalance (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
+      description TEXT NOT NULL,
       monthYear TEXT NOT NULL,
       amount NUMERIC NOT NULL,
       recursive NUMERIC NOT NULL,

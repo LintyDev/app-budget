@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useAppDispatch } from "@/hooks/redux.hooks";
 import { userChecking } from "@/features/user/userSlice";
 import * as FileSystem from 'expo-file-system';
+import { getAccount } from "@/features/accounts/accountsSlice";
 
 function LoadingIndexPage() {
   const debug = false;
@@ -24,9 +25,9 @@ function LoadingIndexPage() {
   const deleteDatabase = async () => {
     try {
       await FileSystem.deleteAsync(FileSystem.documentDirectory + 'SQLite/budget-app.sqlite');
-      console.log("Base de données supprimée avec succès.");
+      console.log("db deleted");
     } catch (error) {
-      console.error("Erreur lors de la suppression de la base de données :", error);
+      console.error("error on db delete :", error);
     }
   };
 
@@ -35,15 +36,20 @@ function LoadingIndexPage() {
     // First create tables
     createTables();
 
-    // check if an user exist
     try {
-      const check = await dispatch(userChecking());
-      if (check.payload) {
-        router.replace("/dashboard/");
-      } else {
+      // check if an user exist
+      const checkUser = await dispatch(userChecking());
+      if (!checkUser.payload) {
         console.log('pas de data');
         router.replace("/login/");
+        return;
       }
+
+      // load accounts
+      await dispatch(getAccount());
+
+      // if ok go to dashboard
+      router.replace('/dashboard/');
     } catch (error) {
       console.error(error);
     }
