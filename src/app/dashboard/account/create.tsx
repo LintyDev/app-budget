@@ -101,7 +101,6 @@ function CreateAccount() {
           <TextInput
             style={globalStyles.input}
             placeholder="Description du revenu (e.g Salaire)"
-            inputMode={'decimal'}
             value={dataIncome.description}
             onChangeText={(text) => {
               setDataIncome(prev => ({...prev, description: text}));
@@ -110,6 +109,7 @@ function CreateAccount() {
           <TextInput
             style={globalStyles.input}
             placeholder="Montant du revenu (e.g 2500)"
+            inputMode={'decimal'}
             keyboardType={"number-pad"}
             onChangeText={(text) => {
               setDataIncome(prev => ({...prev, amount: +text}));

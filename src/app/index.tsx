@@ -32,7 +32,6 @@ function LoadingIndexPage() {
   };
 
   const initApp = async () => {
-    console.log(Date.now());
     // First create tables
     createTables();
 
