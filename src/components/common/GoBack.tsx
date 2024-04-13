@@ -19,7 +19,7 @@ function GoBack(props: {title: string}) {
         </View>
       </Pressable>
       <View style={styles.titleContainer}>
-        <Text style={[globalStyles.text, styles.text]}>{props.title}</Text>
+        <Text style={[globalStyles.text, styles.textTitle]}>{props.title}</Text>
       </View>
     </View>
   );
@@ -38,6 +38,9 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   text: {
+    fontSize: 20
+  },
+  textTitle: {
     fontSize: 20
   },
   titleContainer: {
