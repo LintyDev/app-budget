@@ -50,46 +50,48 @@ function Accounts() {
             end={{ x: 0, y: 0 }}
             style={styles.background}
           />
+            <Pressable onPress={() => {
+              router.push('/categories/')
+            }}>
           <View style={styleCard.AccountCardContent}>
-
-            <View style={styles.stats}>
-              <View style={styleCard.topTitle}>
-                <View style={[styleCard.iconTextName]}>
-                  <MaterialIcons name="account-balance" size={16} color="white" />
-                  <Text numberOfLines={1} ellipsizeMode="tail" style={[styleCard.account, globalStyles.text]}>{account.name}</Text>
+              <View style={styles.stats}>
+                <View style={styleCard.topTitle}>
+                  <View style={[styleCard.iconTextName]}>
+                    <MaterialIcons name="account-balance" size={16} color="white" />
+                    <Text numberOfLines={1} ellipsizeMode="tail" style={[styleCard.account, globalStyles.text]}>{account.name}</Text>
+                  </View>
+                  <View style={[styleCard.iconText]}>
+                    <AntDesign name="calendar" size={16} color="white" />
+                    <Text style={globalStyles.text}>{account.currentMonthYear}</Text>
+                  </View>
                 </View>
-                <View style={[styleCard.iconText]}>
-                  <AntDesign name="calendar" size={16} color="white" />
-                  <Text style={globalStyles.text}>{account.currentMonthYear}</Text>
+                <View style={[styleCard.iconText, styleCard.currentAmount]}>
+                  <FontAwesome5 name="euro-sign" size={38} color="white" />
+                  <Text style={[styleCard.currentAmountText, globalStyles.text]}>{account.currentAmount}</Text>
                 </View>
               </View>
-              <View style={[styleCard.iconText, styleCard.currentAmount]}>
-                <FontAwesome5 name="euro-sign" size={38} color="white" />
-                <Text style={[styleCard.currentAmountText, globalStyles.text]}>{account.currentAmount}</Text>
-              </View>
-            </View>
 
-            <View style={[styles.chart]}>
-              <View style={[styleCard.iconText, styleCard.initialAmount]}>
-                <MaterialCommunityIcons name="cash-plus" size={16} color="white" />
-                <Text style={globalStyles.text}>{account.initalAmount}</Text>
+              <View style={[styles.chart]}>
+                <View style={[styleCard.iconText, styleCard.initialAmount]}>
+                  <MaterialCommunityIcons name="cash-plus" size={16} color="white" />
+                  <Text style={globalStyles.text}>{account.initalAmount}</Text>
+                </View>
+                <View style={[styleCard.iconText, styleCard.countCat]}>
+                  <MaterialCommunityIcons name="wallet" size={16} color="white" />
+                  <Text style={globalStyles.text}>{account.countCategories}</Text>
+                </View>
+                <ProgressChart
+                  data={data}
+                  width={155}
+                  height={155}
+                  strokeWidth={20}
+                  radius={55}
+                  chartConfig={chartConfig}
+                  hideLegend={true}
+                />
               </View>
-              <View style={[styleCard.iconText, styleCard.countCat]}>
-                <MaterialCommunityIcons name="wallet" size={16} color="white" />
-                <Text style={globalStyles.text}>{account.countCategories}</Text>
-              </View>
-              <ProgressChart
-                data={data}
-                width={155}
-                height={155}
-                strokeWidth={20}
-                radius={55}
-                chartConfig={chartConfig}
-                hideLegend={true}
-              />
-
-            </View>
           </View>
+            </Pressable>
         </ImageBackground>
       </View>
     );
