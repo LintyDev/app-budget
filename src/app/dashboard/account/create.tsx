@@ -17,6 +17,8 @@ import AccountsService from "@/services/accounts.services";
 import { router } from "expo-router";
 import { useAppDispatch } from "@/hooks/redux.hooks";
 import { getAccountById } from "@/features/accounts/accountsSlice";
+import ActivitiesServices from "@/services/activities.services";
+import { InputLog } from "@/types/logs";
 
 function CreateAccount() {
   const dispatch = useAppDispatch();
@@ -48,6 +50,18 @@ function CreateAccount() {
       if (!createAccount) {
         return false;
       }
+      const addAccountLog = await new ActivitiesServices().addLog({
+        type: 'add_account',
+        description: `Création du compte : ${dataAccount.name}`,
+        date: date.toLocaleDateString(),
+        amount: null,
+        transaction_type: null,
+        remainingAmount: null,
+        categoryId: null
+      });
+      if (!addAccountLog) {
+        return false;
+      }
 
       // add income
       const inputAddIncome : InputIncome = { 
@@ -56,6 +70,18 @@ function CreateAccount() {
         recursive: check };
       const addIncome = await new AccountsService().addIncome(inputAddIncome);
       if(!addIncome) {
+        return false;
+      }
+      const addIncomeLog = await new ActivitiesServices().addLog({
+        type: 'transaction_income',
+        description: `Ajout du revenu : ${dataIncome.description}`,
+        date: date.toLocaleDateString(),
+        amount: inputAddIncome.amount,
+        transaction_type: 'income_recursive',
+        remainingAmount: inputAddIncome.amount,
+        categoryId: addIncome
+      });
+      if (!addIncomeLog) {
         return false;
       }
 

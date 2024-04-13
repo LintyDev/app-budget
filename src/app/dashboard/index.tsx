@@ -5,7 +5,7 @@ import { RootState } from "@/store/store";
 import globalStyles from "@/styles/globalStyles";
 import { SafeAreaView, Text } from "react-native";
 import { useSelector } from "react-redux";
-import RecentTransactions from "@/components/dashboard/RecentTransactions";
+import RecentActivities from "@/components/dashboard/RecentActivities";
 
 function DashBoardHome() {
   const user = useSelector((state: RootState) => state.user);
@@ -15,7 +15,7 @@ function DashBoardHome() {
       <Header />
       <Accounts />
       <ShortcutsMenu />
-      <RecentTransactions />
+      <RecentActivities />
     </SafeAreaView>
   );
 }

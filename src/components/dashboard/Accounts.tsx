@@ -17,72 +17,66 @@ import { AbstractChartConfig } from "react-native-chart-kit/dist/AbstractChart";
 function Accounts() {
   const accounts = useAppSelector((state) => state.accounts);
   const account = accounts[0];
-  const percentData = (((account.initalAmount - account.currentAmount) * 100) / account.initalAmount) / 100;
-  // const percentData = (((1200 - 1100) * 100) / 1200) / 100;
-  const accountName = account.name.length < 14 ? account.name : `${account.name.substring(0, 13)}...`;
-  console.log(percentData);
-
-  const data = {
-    data: [percentData]
-  };
 
   const chartConfig : AbstractChartConfig = {
     backgroundGradientFrom: "#1E2923",
     backgroundGradientFromOpacity: 0,
     backgroundGradientTo: "#08130D",
     backgroundGradientToOpacity: 0,
-    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
     useShadowColorFromDataset: false
   }
 
-  useEffect(() => {
-    console.log(accounts);
-  }, []);
-
   if (accounts.length > 0) {
+    const percentData = (((account.initalAmount - account.currentAmount) * 100) / account.initalAmount) / 100;
+    const accountName = account.name.length < 14 ? account.name : `${account.name.substring(0, 13)}...`;
+    const data = {
+      data: [percentData]
+    };
+
     return (
       <View style={[styles.containerCard]}>
         <ImageBackground
-          source={require("@assets/noise.png")}
+          source={require("@assets/texture.jpg")}
           style={styles.ImgBackGround}
-          resizeMode="repeat"
+          resizeMode="cover"
           borderRadius={15}
         >
           <LinearGradient
-            colors={["rgba(188, 82, 170, 0.64)", "rgba(202, 68, 113, 0.71)"]}
-            // colors={['rgba(26, 255, 146, 0.64)', 'rgba(118, 51, 106, 0.71)']}
-            // colors={['green', 'blue']}
+            // colors={["rgba(188, 82, 170, 0.00)", "rgba(202, 68, 113, 0.71)"]}
+            colors={["rgba(0, 0, 0, 0.5)", "rgba(168, 31, 146, 0.5)"]}
+            // colors={["rgba(0, 0, 0, 0.5)", "rgba(202, 68, 113, 0.71)"]}
             start={{ x: 1, y: 1 }}
             end={{ x: 0, y: 0 }}
             style={styles.background}
           />
           <View style={styleCard.AccountCardContent}>
+
             <View style={styles.stats}>
-
-              <View style={[styleCard.iconTextName]}>
-                <MaterialIcons name="account-balance" size={28} color="black" />
-                <Text numberOfLines={1} ellipsizeMode="tail" style={[styleCard.account]}>{accountName}</Text>
+              <View style={styleCard.topTitle}>
+                <View style={[styleCard.iconTextName]}>
+                  <MaterialIcons name="account-balance" size={16} color="white" />
+                  <Text numberOfLines={1} ellipsizeMode="tail" style={[styleCard.account, globalStyles.text]}>{account.name}</Text>
+                </View>
+                <View style={[styleCard.iconText]}>
+                  <AntDesign name="calendar" size={16} color="white" />
+                  <Text style={globalStyles.text}>{account.currentMonthYear}</Text>
+                </View>
               </View>
-              <View style={[styleCard.iconText]}>
-                <AntDesign name="calendar" size={16} color="black" />
-                <Text>{account.currentMonthYear}</Text>
-              </View>
-
               <View style={[styleCard.iconText, styleCard.currentAmount]}>
-                <FontAwesome5 name="euro-sign" size={38} color="black" />
-                <Text style={styleCard.currentAmountText}>{account.currentAmount}</Text>
+                <FontAwesome5 name="euro-sign" size={38} color="white" />
+                <Text style={[styleCard.currentAmountText, globalStyles.text]}>{account.currentAmount}</Text>
               </View>
-
             </View>
-            <View style={[styles.chart]}>
 
+            <View style={[styles.chart]}>
               <View style={[styleCard.iconText, styleCard.initialAmount]}>
-                <MaterialCommunityIcons name="cash-plus" size={16} color="black" />
-                <Text>{account.initalAmount}</Text>
+                <MaterialCommunityIcons name="cash-plus" size={16} color="white" />
+                <Text style={globalStyles.text}>{account.initalAmount}</Text>
               </View>
               <View style={[styleCard.iconText, styleCard.countCat]}>
-                <MaterialIcons name="account-tree" size={16} color="black" />
-                <Text>{account.countCategories}</Text>
+                <MaterialCommunityIcons name="wallet" size={16} color="white" />
+                <Text style={globalStyles.text}>{account.countCategories}</Text>
               </View>
               <ProgressChart
                 data={data}
@@ -135,6 +129,7 @@ const styles = StyleSheet.create({
   },
   ImgBackGround: {
     flex: 1,
+    opacity: 1
   },
   addbutton: {
     flex: 1,
@@ -164,19 +159,24 @@ const styleCard = StyleSheet.create({
   iconTextName:{
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: 5,
   },
   titleMonth: {
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
   account: {
-    fontSize: 30
+    fontSize: 16
   },
   currentAmount: {
     position: 'absolute',
     bottom: 10,
     left: 15,
+    // backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    // paddingVertical: 5,
+    // paddingHorizontal: 15,
+    // borderRadius: 30,
+    gap: 15
   },
   currentAmountText: {
     fontSize: 48
@@ -195,6 +195,11 @@ const styleCard = StyleSheet.create({
     right: 0,
     textAlign: 'center'
   },
+  topTitle: {
+    // backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    // padding: 5,
+    // borderRadius: 10,
+  }
 });
 
 export default Accounts;

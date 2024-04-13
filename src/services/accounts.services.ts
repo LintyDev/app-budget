@@ -111,7 +111,7 @@ class AccountsService {
     return new Promise((resolve, reject) => {
       this.db.transaction(tx => {
         tx.executeSql(
-          `INSERT INTO MonthlyBalance (description, monthYear, amount, recursive, accountId)
+          `INSERT INTO Income (description, monthYear, amount, recursive, accountId)
             values (?, ?, ?, ?, ?)`,
           [data.description, data.monthYear, data.amount, data.recursive, data.accountId],
           (_, result) => {

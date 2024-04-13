@@ -1,41 +1,56 @@
 import globalStyles from "@/styles/globalStyles";
-import { StyleSheet, Text, View } from "react-native";
-import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 function ShortcutsMenu() {
   return (
     <View style={styles.container}>
-
-      <View style={styles.icon}>
-        <View style={styles.bgIcon}>
-          <MaterialCommunityIcons name="cash-minus" size={30} color="white" />
+      <Pressable>
+        <View style={styles.icon}>
+          <View style={styles.bgIcon}>
+            <MaterialCommunityIcons name="cash-minus" size={20} color="#FFD5F8" />
+          </View>
+          <Text style={globalStyles.text}>Dépenses</Text>
         </View>
-        <Text style={globalStyles.text}>Dépenses</Text>
-      </View>
+      </Pressable>
 
-      <View style={styles.icon}>
-        <View style={styles.bgIcon}>
-          <MaterialCommunityIcons name="cash-plus" size={30} color="white" />
+      <Pressable>
+        <View style={styles.icon}>
+          <View style={styles.bgIcon}>
+            <MaterialCommunityIcons name="cash-plus" size={20} color="#FFD5F8" />
+          </View>
+          <Text style={globalStyles.text}>Revenus</Text>
         </View>
-        <Text style={globalStyles.text}>Revenus</Text>
-      </View>
+      </Pressable>
 
-      <View style={styles.icon}>
-        <View style={styles.bgIcon}>
-          <MaterialCommunityIcons name="chart-bar"size={30} color="white" />
+      <Pressable>
+        <View style={styles.icon}>
+          <View style={styles.bgIcon}>
+            <MaterialCommunityIcons name="wallet-plus" size={20} color="#FFD5F8" />
+          </View>
+          <Text style={globalStyles.text}>Catégories</Text>
         </View>
-        <Text style={globalStyles.text}>Statistiques</Text>
-      </View>
+      </Pressable>
 
-      <View style={styles.icon}>
-        <View style={styles.bgIcon}>
-          <MaterialCommunityIcons name="bullseye-arrow" size={30} color="white" />
+      <Pressable>
+        <View style={styles.icon}>
+          <View style={styles.bgIcon}>
+            <MaterialCommunityIcons name="chart-bar" size={20} color="#FFD5F8" />
+          </View>
+          <Text style={globalStyles.text}>Statistiques</Text>
         </View>
-        <Text style={globalStyles.text}>Objectifs</Text>
-      </View>
+      </Pressable>
 
+      <Pressable>
+        <View style={styles.icon}>
+          <View style={styles.bgIcon}>
+            <MaterialCommunityIcons name="bullseye-arrow" size={20} color="#FFD5F8" />
+          </View>
+          <Text style={globalStyles.text}>Objectifs</Text>
+        </View>
+      </Pressable>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -49,8 +64,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   bgIcon: {
-    backgroundColor: '#222',
-    borderRadius: 25,
+    backgroundColor: '#151515',
+    borderRadius: 20,
     padding: 15,
     marginBottom: 5
   }

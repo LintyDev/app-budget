@@ -38,18 +38,6 @@ function LoginPage() {
       avatarId: avatar
     }
 
-    // try {
-    //   const createUser = await new UserService().createUser(data);
-    //   if (createUser) {
-    //     console.log('user saved');
-    //     router.replace('/dashboard/');
-    //   } else {
-    //     console.log('une erreur est survenue');
-    //   }
-    // } catch (err) {
-    //   console.error(err);
-    // }
-
     try {
       const create = await dispatch(createUser(data));
       if (create) {
