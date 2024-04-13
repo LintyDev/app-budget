@@ -2,7 +2,7 @@ import ActivitiesServices from "@/services/activities.services";
 import globalStyles from "@/styles/globalStyles";
 import { Log } from "@/types/logs";
 import { useQuery } from "@tanstack/react-query";
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import ListActivities from "./ListActivities";
 
 function RecentActivities() {
@@ -13,15 +13,20 @@ function RecentActivities() {
   const activities = data ? [...data].reverse() : null;
 
   return (
-    <View>
+    <View style={styles.fullSpace}>
       <Text style={[globalStyles.text, styles.title]}>Activités récentes</Text>
-      {isPending || isError || !activities ?
-      <Text style={[globalStyles.text]}>Aucune activité</Text> :
-      activities.map((a) => {
-        return (
-          <ListActivities activities={a} key={a.id}/>
-        )
-      })}
+      <View style={styles.fullSpace}>
+        {isPending || isError || !activities ?
+          <Text style={[globalStyles.text]}>Aucune activité</Text> :
+          <ScrollView>
+            {activities.map((a) => {
+              return (
+                <ListActivities activities={a} key={a.id}/>
+              )
+            })}
+          </ScrollView>
+        }
+      </View>
     </View>
   );
 }
@@ -29,6 +34,9 @@ function RecentActivities() {
 const styles = StyleSheet.create({
   title: {
     fontSize: 28
+  },
+  fullSpace: {
+    flex: 1
   }
 });
 

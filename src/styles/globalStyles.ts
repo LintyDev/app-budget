@@ -23,7 +23,15 @@ const globalStyles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
     backgroundColor: "#94C1B2",
+  },
+  textGreen: {
+    color: "#94C1B2"
   }
 });
 
 export default globalStyles;
+
+
+// Colors used
+// green : "#94C1B2"
+// red : ?
