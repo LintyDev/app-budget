@@ -1,6 +1,7 @@
 import connectDatabase from "@/lib/datasource";
 import Account, { AccountState, InputAccount, InputIncome } from "@/types/accounts";
 import * as SQLite from "expo-sqlite";
+import ActivitiesServices from "./activities.services";
 
 class AccountsService {
   db: SQLite.SQLiteDatabase;
@@ -17,10 +18,29 @@ class AccountsService {
           `INSERT INTO Accounts (name, currentAmount, initalAmount, currentMonthYear, countCategories) 
             values (?, ?, ?, ?, ?)`,
           [data.name, data.currentAmount, data.initalAmount, data.currentMonthYear, data.countCategories],
-          (_, result) => {
+          async (_, result) => {
             console.log('result createAccount : ', result);
             if (result.rowsAffected > 0 && result.insertId) {
-              resolve(result.insertId);
+              // insert activites logs
+              try {
+                const date = new Date();
+                const addActivitiesLogs = await new ActivitiesServices().addLog({
+                  type: 'add_account',
+                  description: `Création du compte : ${data.name}`,
+                  date: date.toLocaleDateString(),
+                  amount: null,
+                  transaction_type: null,
+                  remainingAmount: null,
+                  categoryId: null
+                });
+                if(addActivitiesLogs) {
+                  resolve(result.insertId);
+                } else {
+                  resolve(null);
+                }
+              } catch (error) {
+                reject(error);
+              }
             } else {
               resolve(null);
             }
@@ -117,6 +137,7 @@ class AccountsService {
           (_, result) => {
             console.log('result addIncome : ', result);
             if (result.rowsAffected > 0 && result.insertId) {
+              // insert activities logs (maybe later because we need some informations)
               resolve(result.insertId);
             } else {
               resolve(null);

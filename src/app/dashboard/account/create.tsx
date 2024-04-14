@@ -50,18 +50,18 @@ function CreateAccount() {
       if (!createAccount) {
         return false;
       }
-      const addAccountLog = await new ActivitiesServices().addLog({
-        type: 'add_account',
-        description: `Création du compte : ${dataAccount.name}`,
-        date: date.toLocaleDateString(),
-        amount: null,
-        transaction_type: null,
-        remainingAmount: null,
-        categoryId: null
-      });
-      if (!addAccountLog) {
-        return false;
-      }
+      // const addAccountLog = await new ActivitiesServices().addLog({
+      //   type: 'add_account',
+      //   description: `Création du compte : ${dataAccount.name}`,
+      //   date: date.toLocaleDateString(),
+      //   amount: null,
+      //   transaction_type: null,
+      //   remainingAmount: null,
+      //   categoryId: null
+      // });
+      // if (!addAccountLog) {
+      //   return false;
+      // }
 
       // add income
       const inputAddIncome : InputIncome = { 
@@ -77,7 +77,7 @@ function CreateAccount() {
         description: `Ajout du revenu : ${dataIncome.description}`,
         date: date.toLocaleDateString(),
         amount: inputAddIncome.amount,
-        transaction_type: 'income_recursive',
+        transaction_type: checkRecursive ? 'income_recursive' : 'income',
         remainingAmount: inputAddIncome.amount,
         categoryId: addIncome
       });
