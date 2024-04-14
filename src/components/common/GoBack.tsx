@@ -3,16 +3,26 @@ import { AntDesign } from "@expo/vector-icons";
 import globalStyles from "@/styles/globalStyles";
 import { router } from "expo-router";
 
-function GoBack(props: {title: string}) {
+function GoBack(props: {title: string, link?: string}) {
 
   const back = () => {
     console.log('go back')
     router.back();
   }
 
+  const pushBack = (link: string) => {
+    router.push(link);
+  }
+
   return (
     <View style={styles.container}>
-      <Pressable onPress={back}>
+      <Pressable onPress={() => {
+        if (props.link) {
+          pushBack(props.link);
+        } else {
+          back();
+        }
+      }}>
         <View style={styles.goBack}>
           <AntDesign name="left" size={30} color="white" />
           <Text style={[globalStyles.text, styles.text]}>Retour</Text>
