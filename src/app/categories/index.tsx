@@ -10,11 +10,11 @@ function CategoriesPage() {
 
   return (
     <SafeAreaView style={globalStyles.container}>
-      <GoBack title="Catégories" />
+      <GoBack title="Catégories" link="/dashboard/"/>
       {accounts[0].countCategories === 0 ? 
         <View style={styles.containerAdd}>
           <View style={styles.addbutton}>
-            <Pressable onPress={() => router.navigate('/dashboard/account/create')}>
+            <Pressable onPress={() => router.push('/categories/create/')}>
               <AntDesign name="pluscircle" size={48} color="white" />
             </Pressable>
             <Text style={globalStyles.text}>Ajouter une catégorie</Text>
