@@ -31,7 +31,7 @@ export const createTables = () => {
     CREATE TABLE IF NOT EXISTS Category (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
-      subcat TEXT DEFAULT null,
+      color TEXT DEFAULT null,
       amountAllocated NUMERIC DEFAULT null,
       currentAmount NUMERIC NOT NULL,
       accountId INTEGER NOT NULL,
