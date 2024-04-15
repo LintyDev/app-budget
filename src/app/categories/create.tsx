@@ -31,6 +31,8 @@ function CategoryCreatePage() {
             keyboardType={"number-pad"}
             placeholder="Montant alloué (e.g 500)"
           />
+
+          // TODO ADD BUTTON AND 2 LOGICS JUST CREATE AND CREATE WITH TRANSACTION !
         </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>
