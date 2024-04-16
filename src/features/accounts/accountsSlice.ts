@@ -1,5 +1,5 @@
 import AccountsService from "@/services/accounts.services";
-import Account from "@/types/accounts";
+import Account, { InputAccount } from "@/types/accounts";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState: Account[] = [];
@@ -12,6 +12,11 @@ export const getAccountById =  createAsyncThunk('accounts/getById', async (id: n
 export const getAccount = createAsyncThunk('accounts/get', async (thunkApi) => {
   const getAccount = await new AccountsService().getAccount();
   return getAccount;
+});
+
+export const updateAccount = createAsyncThunk('account/update', async ({id, data} : {id: number, data: InputAccount}, thunkApi) => {
+  const updateAccount = await new AccountsService().updateAccount(id, data);
+  return updateAccount;
 });
 
 export const accountSlice = createSlice({
@@ -36,6 +41,17 @@ export const accountSlice = createSlice({
       }
       return state;
     });
+
+    builder.addCase(updateAccount.fulfilled, (state, action) => {
+      if(action.payload) {
+        const data = action.payload;
+        let accountState = state.find(x => x.id == data.id);
+        if (accountState) {
+          accountState = {...data}
+        }
+      }
+      return state;
+    })
 
   },
 });

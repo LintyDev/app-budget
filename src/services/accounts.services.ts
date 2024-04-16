@@ -98,7 +98,7 @@ class AccountsService {
     });
   }
 
-  updateAccount(id: number, data: InputAccount) : Promise<boolean> {
+  updateAccount(id: number, data: InputAccount) : Promise<null | Account> {
     return new Promise((resolve, reject) => {
       this.db.transaction(tx => {
         tx.executeSql(
@@ -109,9 +109,10 @@ class AccountsService {
           (_, result) => {
             console.log('result updateAccount', result);
             if (result.rowsAffected > 0) {
-              resolve(true);
+              const sendData = {...data, id}
+              resolve(sendData);
             }
-            resolve(false);
+            resolve(null);
           },
           (_, error) => {
             reject(error);

@@ -4,9 +4,11 @@ import globalStyles from "@/styles/globalStyles";
 import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { router } from "expo-router";
+import { useEffect } from "react";
 
 function CategoriesPage() {
   const accounts = useAppSelector((state) => state.accounts);
+  console.log('account cat page', accounts);
 
   return (
     <SafeAreaView style={globalStyles.container}>
