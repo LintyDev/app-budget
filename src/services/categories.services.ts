@@ -1,5 +1,5 @@
 import connectDatabase from "@/lib/datasource";
-import { InputCategory } from "@/types/categories";
+import Category, { InputCategory } from "@/types/categories";
 import { SQLiteDatabase } from "expo-sqlite";
 import ActivitiesServices from "./activities.services";
 
@@ -52,8 +52,26 @@ class CategoriesService {
     });
   }
 
-  getCategories() {
-
+  getCategories() : Promise<Category[] | null> {
+    return new Promise((resolve, reject) => {
+      this.db.transaction(tx => {
+        tx.executeSql(
+          `SELECT * FROM Category`,
+          [],
+          (_, result) => {
+            if (result.rows.length > 0) {
+              resolve(result.rows._array);
+            } else {
+              resolve(null);
+            }
+          },
+          (_, error) => {
+            reject(error);
+            return true;
+          }
+        )
+      })
+    })
   }
 
   getCategory(id: number) {

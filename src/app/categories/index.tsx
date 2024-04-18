@@ -5,10 +5,10 @@ import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { useEffect } from "react";
+import ListCategories from "@/components/categories/ListCategories";
 
 function CategoriesPage() {
   const accounts = useAppSelector((state) => state.accounts);
-  console.log('account cat page', accounts);
 
   return (
     <SafeAreaView style={globalStyles.container}>
@@ -22,7 +22,7 @@ function CategoriesPage() {
             <Text style={globalStyles.text}>Ajouter une catégorie</Text>
           </View>
         </View> :
-        <Text style={globalStyles.text}>component listcat</Text>
+        <ListCategories />
       }
     </SafeAreaView>
   );

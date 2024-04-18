@@ -27,17 +27,13 @@ function CategoryCreatePage() {
   }
 
   const submitCat = async () => {
-    console.log(dataCat);
     try {
       const addCat = await new CategoriesService().addCategory(dataCat);
       if(addCat) {
         const acc = accounts.find(x => x.id == dataCat.accountId);
         if (acc) {
-          console.log('mi account', acc);
-          console.log('new account', {...acc, countCategories: acc.countCategories + 1})
           const updateAcc = await dispatch(updateAccount({id: dataCat.accountId, data: {...acc, countCategories: acc.countCategories + 1}}));
           if (updateAcc) {
-            console.log('updated ACCOUNNNNNNT ', updateAcc)
             router.replace('/categories/');
           }
         }
