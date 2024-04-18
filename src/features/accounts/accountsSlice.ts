@@ -45,9 +45,9 @@ export const accountSlice = createSlice({
     builder.addCase(updateAccount.fulfilled, (state, action) => {
       if(action.payload) {
         const data = action.payload;
-        let accountState = state.find(x => x.id == data.id);
-        if (accountState) {
-          accountState = {...data}
+        const accountIndex = state.findIndex(x => x.id === data.id);
+        if (accountIndex !== -1) {
+          state[accountIndex] = {...state[accountIndex], ...data}
         }
       }
       return state;
