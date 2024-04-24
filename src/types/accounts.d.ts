@@ -15,18 +15,8 @@ export interface Account {
 
 export interface InputAccount extends Omit<Account, "id"> {}
 
-export interface AccountState {
-  id?: number;
-
-  name?: string;
-
-  currentAmount?: number;
-
-  initalAmount?: number;
-
-  currentMonthYear?: string;
-
-  countCategories?: number;
+export interface AccountState extends Account{
+  allocatedRemainingAmount: number;
 }
 
 // Type Income

@@ -13,6 +13,7 @@ import { router } from "expo-router";
 function CategoryCreatePage() {
   const accounts = useAppSelector((state) => state.accounts);
   const dispatch = useAppDispatch();
+  const account = accounts[0];
 
   const [dataCat, setDataCat] = useState<InputCategory>({
     name: '',
@@ -28,9 +29,13 @@ function CategoryCreatePage() {
 
   const submitCat = async () => {
     try {
+      if (dataCat.amountAllocated && dataCat.amountAllocated > account.allocatedRemainingAmount) {
+        console.log('Tu ne peux pas ajouter autant dans cette catégorie!')
+        return;
+      }
       const addCat = await new CategoriesService().addCategory(dataCat);
       if(addCat) {
-        const acc = accounts.find(x => x.id == dataCat.accountId);
+        const acc = accounts.find(x => x.id === dataCat.accountId);
         if (acc) {
           const updateAcc = await dispatch(updateAccount({id: dataCat.accountId, data: {...acc, countCategories: acc.countCategories + 1}}));
           if (updateAcc) {
@@ -67,6 +72,7 @@ function CategoryCreatePage() {
               setDataCat(prev => ({...prev, name: text}));
             }}
           />
+          <Text style={globalStyles.text}>Montant à allouer restant  : {account.allocatedRemainingAmount}</Text>
           <TextInput
             style={globalStyles.input}
             inputMode={"decimal"}

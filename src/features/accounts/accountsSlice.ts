@@ -1,21 +1,48 @@
 import AccountsService from "@/services/accounts.services";
-import Account, { InputAccount } from "@/types/accounts";
+import CategoriesService from "@/services/categories.services";
+import Account, { AccountState, InputAccount } from "@/types/accounts";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-const initialState: Account[] = [];
+const initialState: AccountState[] = [];
 
 export const getAccountById =  createAsyncThunk('accounts/getById', async (id: number, thunkApi) => {
   const getAccountById = await new AccountsService().getAccountById(id);
-  return getAccountById;
+  if (getAccountById) {
+    const acc: AccountState = {...getAccountById, allocatedRemainingAmount: 0}
+    return acc;
+  }
+  return null;
 });
 
 export const getAccount = createAsyncThunk('accounts/get', async (thunkApi) => {
   const getAccount = await new AccountsService().getAccount();
-  return getAccount;
+  if (!getAccount) {
+    return null;
+  }
+  for (const a of [...getAccount as AccountState[]]) {
+    const countAllocated = await new CategoriesService().countAllocated(a.id);
+    a.allocatedRemainingAmount = a.initalAmount;
+    if (countAllocated && countAllocated.allAmountAllocated !== null) {
+      a.allocatedRemainingAmount = a.initalAmount - countAllocated.allAmountAllocated
+    }
+  };
+  const accountState : AccountState[] = [...getAccount as AccountState[]];
+  return accountState;
 });
 
 export const updateAccount = createAsyncThunk('account/update', async ({id, data} : {id: number, data: InputAccount}, thunkApi) => {
   const updateAccount = await new AccountsService().updateAccount(id, data);
+  if (!updateAccount) {
+    return null;
+  }
+  const countAllocated = await new CategoriesService().countAllocated(updateAccount.id);
+  if (countAllocated) {
+    const acc : AccountState = {...updateAccount, allocatedRemainingAmount: updateAccount.initalAmount}
+    if (countAllocated.allAmountAllocated !== null) {
+      acc.allocatedRemainingAmount = acc.initalAmount - countAllocated.allAmountAllocated;
+    }
+    return acc;
+  }
   return updateAccount;
 });
 

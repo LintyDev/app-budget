@@ -127,6 +127,28 @@ class AccountsService {
 
   }
 
+  getAccountFull() : Promise<AccountState[] | null> {
+    return new Promise((resolve, reject) => {
+      this.db.transaction(tx => {
+        tx.executeSql(
+          `SELECT * FROM Accounts`,
+          [],
+          (_, result) => {
+            console.log('result getAccount : ', result);
+            if (result.rows.length > 0) {
+              resolve(result.rows._array)
+            }
+            resolve(null);
+          },
+          (_, error) => {
+            reject(error);
+            return true;
+          }
+        )
+      });
+    });
+  }
+
   // INCOME FUNCTION
   addIncome(data: InputIncome) : Promise<null | number> {
     return new Promise((resolve, reject) => {

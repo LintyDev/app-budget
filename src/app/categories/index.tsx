@@ -6,9 +6,11 @@ import { AntDesign } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { useEffect } from "react";
 import ListCategories from "@/components/categories/ListCategories";
+import CategoriesService from "@/services/categories.services";
 
 function CategoriesPage() {
   const accounts = useAppSelector((state) => state.accounts);
+  console.log(accounts[0].allocatedRemainingAmount);
 
   return (
     <SafeAreaView style={globalStyles.container}>
@@ -22,7 +24,13 @@ function CategoriesPage() {
             <Text style={globalStyles.text}>Ajouter une catégorie</Text>
           </View>
         </View> :
-        <ListCategories />
+        <>
+          <Text style={globalStyles.text}>composant menu cat</Text>
+          <Pressable onPress={() => router.push('/categories/create/')}>
+            <Text style={globalStyles.text}>add category</Text>
+          </Pressable>
+          <ListCategories />
+        </>
       }
     </SafeAreaView>
   );

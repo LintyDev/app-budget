@@ -74,6 +74,30 @@ class CategoriesService {
     })
   }
 
+  countAllocated(id: number) : Promise<null | {allAmountAllocated: number}> {
+    return new Promise((resolve, reject) => {
+      this.db.transaction(tx => {
+        tx.executeSql(
+          `SELECT SUM(amountAllocated) as allAmountAllocated
+            FROM Category
+            WHERE accountId = ?`,
+          [id],
+          (_, result) => {
+            if (result.rows.length > 0) {
+              resolve(result.rows._array[0]);
+            } else {
+              resolve(null);
+            }
+          },
+          (_, error) => {
+            reject(error);
+            return true;
+          }
+        )
+      })
+    })
+  }
+
   getCategory(id: number) {
 
   }
