@@ -45,6 +45,7 @@ function LoadingIndexPage() {
       }
 
       // load accounts
+      console.log('load account');
       await dispatch(getAccount());
 
       // if ok go to dashboard
