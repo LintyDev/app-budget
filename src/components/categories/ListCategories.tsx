@@ -2,7 +2,8 @@ import CategoriesService from "@/services/categories.services";
 import globalStyles from "@/styles/globalStyles";
 import { useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
-import { Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 
 function ListCategories() {
   const { isError, isLoading, data } = useQuery({
@@ -13,7 +14,7 @@ function ListCategories() {
 
   if (isLoading) {
     <View>
-        <Text style={globalStyles.text}>Loading...</Text>
+      <Text style={globalStyles.text}>Loading...</Text>
     </View>
   }
   if (isError) {
@@ -21,10 +22,27 @@ function ListCategories() {
   }
   console.log(data);
   return (
-    <View>
-        <Text style={globalStyles.text}>Je suis le composant ListCategories</Text>
+    <View style={globalStyles.container}>
+      <FlashList
+        data={data}
+        renderItem={({ item }) =>
+          <View style={style.containerCard}>
+            <Text style={globalStyles.text}>{item.name}</Text>
+            <Text style={globalStyles.text}>{item.currentAmount}</Text>
+            <Text style={globalStyles.text}>{item.amountAllocated}</Text>
+          </View>
+        }
+        estimatedItemSize={10}
+        numColumns={3}
+      />
     </View>
   )
 }
+
+const style = StyleSheet.create({
+  containerCard: {
+
+  }
+});
 
 export default ListCategories;

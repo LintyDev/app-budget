@@ -24,7 +24,6 @@ function ListActivities(props: {activities : Log}) {
       icon = <MaterialCommunityIcons name="information-outline" size={30} color="#FFD5F8" />;
       break;
   }
-  console.log(activities.date);
   return (
     <View style={styles.container}>
       <View style={styles.iconBg}>
