@@ -4,13 +4,12 @@ import globalStyles from "@/styles/globalStyles";
 import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { router } from "expo-router";
-import { useEffect } from "react";
 import ListCategories from "@/components/categories/ListCategories";
-import CategoriesService from "@/services/categories.services";
+import ShortcutsCategories from "@/components/categories/ShortcutsCategories";
+import HeaderCategories from "@/components/categories/HeaderCategories";
 
 function CategoriesPage() {
   const accounts = useAppSelector((state) => state.accounts);
-  console.log(accounts[0].allocatedRemainingAmount);
 
   return (
     <SafeAreaView style={globalStyles.container}>
@@ -25,10 +24,8 @@ function CategoriesPage() {
           </View>
         </View> :
         <>
-          <Text style={globalStyles.text}>composant menu cat</Text>
-          <Pressable onPress={() => router.push('/categories/create/')}>
-            <Text style={globalStyles.text}>add category</Text>
-          </Pressable>
+          <HeaderCategories />
+          <ShortcutsCategories />
           <ListCategories />
         </>
       }

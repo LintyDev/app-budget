@@ -5,7 +5,7 @@ export interface Category {
 
   color: string;
 
-  amountAllocated: number | null;
+  amountAllocated: number;
 
   currentAmount: number;
 

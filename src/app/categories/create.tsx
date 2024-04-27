@@ -72,7 +72,7 @@ function CategoryCreatePage() {
               setDataCat(prev => ({...prev, name: text}));
             }}
           />
-          <Text style={globalStyles.text}>Montant à allouer restant  : {account.allocatedRemainingAmount}</Text>
+          <Text style={globalStyles.text}>Montant restant à allouer : {account.allocatedRemainingAmount}</Text>
           <TextInput
             style={globalStyles.input}
             inputMode={"decimal"}
