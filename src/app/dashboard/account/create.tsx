@@ -66,7 +66,7 @@ function CreateAccount() {
         amount: inputAddIncome.amount,
         transaction_type: checkRecursive ? 'income_recursive' : 'income',
         remainingAmount: inputAddIncome.amount,
-        categoryId: addIncome
+        categoryId: null
       });
       if (!addIncomeLog) {
         return false;
@@ -123,7 +123,7 @@ function CreateAccount() {
           <TextInput
             style={globalStyles.input}
             placeholder="Montant du revenu (e.g 2500)"
-            inputMode={'decimal'}
+            inputMode={'numeric'}
             keyboardType={"number-pad"}
             onChangeText={(text) => {
               setDataIncome(prev => ({...prev, amount: +text}));

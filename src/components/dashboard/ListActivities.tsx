@@ -10,14 +10,17 @@ function ListActivities(props: {activities : Log}) {
 
   const typeAmount = activities.transaction_type?.split('_');
   let icon : React.JSX.Element;
+  let iconBg : string = '';
   switch (activities.type) {
     case 'add_account':
       icon = <MaterialCommunityIcons name="wallet-plus" size={30} color="#FFD5F8" />;
       break;
     case 'transaction_income':
+      iconBg = '#94C1B2';
       icon = <MaterialCommunityIcons name="cash-plus" size={30} color="#FFD5F8" />;
       break;
     case 'transaction_expense':
+      iconBg = '#C19494';
       icon = <MaterialCommunityIcons name="cash-minus" size={30} color="#FFD5F8" />;
       break;
     default:
@@ -26,7 +29,7 @@ function ListActivities(props: {activities : Log}) {
   }
   return (
     <View style={styles.container}>
-      <View style={styles.iconBg}>
+      <View style={[styles.iconBg, {backgroundColor: iconBg}]}>
         {icon}
       </View>
 
@@ -37,7 +40,7 @@ function ListActivities(props: {activities : Log}) {
 
       <View style={styles.amount}>
         {activities.amount && 
-        <Text style={[globalStyles.text, styles.textAmount, globalStyles.textGreen]}>{typeAmount && typeAmount[0] == 'income' ? '+' : '-'} {activities.amount}</Text>}
+        <Text style={[globalStyles.text, styles.textAmount, {color: iconBg}]}>{typeAmount && typeAmount[0] == 'income' ? '+' : '-'} {activities.amount}</Text>}
       </View>
     </View>
   )

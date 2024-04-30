@@ -17,7 +17,7 @@ function CategoryCreatePage() {
 
   const [dataCat, setDataCat] = useState<InputCategory>({
     name: '',
-    color: '',
+    color: '#ffffff',
     amountAllocated: 0,
     currentAmount: 0,
     accountId: 1
@@ -31,6 +31,10 @@ function CategoryCreatePage() {
     try {
       if (dataCat.amountAllocated && dataCat.amountAllocated > account.allocatedRemainingAmount) {
         console.log('Tu ne peux pas ajouter autant dans cette catégorie!')
+        return;
+      }
+      if(dataCat.color === '') {
+        console.log('la couleur ne doit pas être vide!');
         return;
       }
       const addCat = await new CategoriesService().addCategory(dataCat);
@@ -75,7 +79,7 @@ function CategoryCreatePage() {
           <Text style={globalStyles.text}>Montant restant à allouer : {account.allocatedRemainingAmount}</Text>
           <TextInput
             style={globalStyles.input}
-            inputMode={"decimal"}
+            inputMode={"numeric"}
             keyboardType={"number-pad"}
             placeholder="Montant alloué (e.g 500)"
             onChangeText={(text) => {

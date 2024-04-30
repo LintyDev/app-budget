@@ -6,7 +6,6 @@ import { router } from "expo-router";
 function GoBack(props: {title: string, link?: string}) {
 
   const back = () => {
-    console.log('go back')
     router.back();
   }
 
