@@ -8,13 +8,13 @@ import { useSelector } from "react-redux";
 import RecentActivities from "@/components/dashboard/RecentActivities";
 
 function DashBoardHome() {
-  const user = useSelector((state: RootState) => state.user);
+  const accounts = useSelector((state: RootState) => state.accounts);
 
   return (
     <SafeAreaView style={globalStyles.container}>
       <Header />
       <Accounts />
-      <ShortcutsMenu />
+      {accounts[0].id && <ShortcutsMenu />}
       <RecentActivities />
     </SafeAreaView>
   );
