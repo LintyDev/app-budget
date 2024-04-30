@@ -7,7 +7,7 @@ import { FlashList } from "@shopify/flash-list";
 import { ProgressChart } from "react-native-chart-kit";
 import { AbstractChartConfig } from "react-native-chart-kit/dist/AbstractChart";
 import { hexToRGB } from "@/lib/common";
-import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
+import { MaterialIcons, FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
 
 function ListCategories() {
   const { isError, isLoading, data } = useQuery({
@@ -39,13 +39,13 @@ function ListCategories() {
         data={data}
         renderItem={({ item }) =>
           <View style={[style.containerCard,]} >
-            <Pressable onPress={() => console.log(item.name)}>
+            <Pressable onPress={() => router.push(`/categories/${item.id}/`)}>
               <View style={[style.containerName, { backgroundColor: hexToRGB(item.color, 0.2) }]}>
                 <Text style={[globalStyles.text, style.textName]}>{item.name}</Text>
               </View>
               <View style={style.containerChart}>
                 <View style={style.containerAllocated}>
-                  <MaterialIcons name="account-balance" size={12} color="grey" />
+                  <FontAwesome6 name="money-bill-transfer" size={12} color="grey" />
                   <Text style={[globalStyles.text, style.textAllocated]}>{item.amountAllocated}</Text>
                 </View>
                 <ProgressChart
