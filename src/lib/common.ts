@@ -10,3 +10,7 @@ export function hexToRGB(hex: string, alpha: string | number) {
 
   return `rgb(${r}, ${g}, ${b})`;
 }
+
+export function numberDB(n: string) {
+  return +n.replace(',', '.');
+}

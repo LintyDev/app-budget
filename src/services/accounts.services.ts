@@ -1,7 +1,9 @@
 import connectDatabase from "@/lib/datasource";
-import Account, { AccountState, InputAccount, InputIncome } from "@/types/accounts";
+import Account, { AccountState, InputAccount, InputExpense, InputIncome } from "@/types/accounts";
 import * as SQLite from "expo-sqlite";
 import ActivitiesServices from "./activities.services";
+import { useAppSelector } from "@/hooks/redux.hooks";
+import CategoriesService from "./categories.services";
 
 class AccountsService {
   db: SQLite.SQLiteDatabase;
@@ -162,6 +164,48 @@ class AccountsService {
             if (result.rowsAffected > 0 && result.insertId) {
               // insert activities logs (maybe later because we need some informations)
               resolve(result.insertId);
+            } else {
+              resolve(null);
+            }
+          },
+          (_, error) => {
+            reject(error);
+            return true;
+          }
+        )
+      });
+    });
+  }
+
+  // EXPENSE FUNCTION
+  addExpense(data: InputExpense, remainingAmountAcc: number, remainAmountCat: number) :  Promise<number | null> {
+    return new Promise((resolve, reject) => {
+      this.db.transaction(tx => {
+        tx.executeSql(
+          `INSERT INTO Expense (description, amount, monthYear, categoryId, accountId)
+            values (?, ?, ?, ?, ?)`,
+          [data.description, data.amount, data.monthYear, data.categoryId, data.accountId],
+          async (_, result) => {
+            if (result.rowsAffected > 0 && result.insertId) {
+              const date = new Date();
+              try {
+                const updateCat = await new CategoriesService().updateAmountCategory(data.categoryId, remainAmountCat);
+                const addActivitiesLogs = await new ActivitiesServices().addLog({
+                  type: 'transaction_expense',
+                  description: `Dépense : ${data.description}`,
+                  date: date.toLocaleDateString(),
+                  amount: data.amount,
+                  transaction_type: null,
+                  remainingAmount: remainingAmountAcc,
+                  categoryId: data.categoryId
+                });
+                if (addActivitiesLogs && updateCat) {
+                  resolve(result.insertId);
+                }
+                resolve(null);
+              } catch (error) {
+                reject(error);
+              }
             } else {
               resolve(null);
             }

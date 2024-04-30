@@ -39,15 +39,16 @@ export const createTables = () => {
     )
   `;
 
-  const transactionTable = `
-    CREATE TABLE IF NOT EXISTS TransactionTable (
+  const expenseTable = `
+    CREATE TABLE IF NOT EXISTS Expense (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       description TEXT NOT NULL,
       amount NUMERIC NOT NULL,
-      date TEXT NOT NULL,
-      type TEXT NOT NULL,
+      monthYear TEXT NOT NULL,
       categoryId INTEGER NOT NULL,
-      FOREIGN KEY(categoryId) REFERENCES Category(id)
+      accountId INTEGER NOT NULL,
+      FOREIGN KEY(categoryId) REFERENCES Category(id),
+      FOREIGN KEY(accountId) REFERENCES Accounts(id)
     )
   `;
 
@@ -115,13 +116,13 @@ export const createTables = () => {
     );
 
     tx.executeSql(
-      transactionTable,
+      expenseTable,
       [],
       () => {
-      console.log("Transaction table created");
+      console.log("Expense table created");
       },
       (_, error)  => {
-        console.log('Transaction table not created', error);
+        console.log('Expense table not created', error);
         return true;
       }
     );

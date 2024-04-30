@@ -27,6 +27,7 @@ export const getAccount = createAsyncThunk('accounts/get', async (thunkApi) => {
     }
   };
   const accountState : AccountState[] = [...getAccount as AccountState[]];
+  console.log('accounts : ', accountState);
   return accountState;
 });
 
@@ -62,9 +63,10 @@ export const accountSlice = createSlice({
     builder.addCase(getAccount.fulfilled, (state, action) => {
       if (action.payload) {
         const data = action.payload;
-        data.forEach((e) => {
-          state.push(e);
-        });
+        // data.forEach((e) => {
+        //   state.push(e);
+        // });
+        state = data
       }
       return state;
     });

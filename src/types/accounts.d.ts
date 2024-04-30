@@ -36,4 +36,21 @@ export interface Income {
 
 export interface InputIncome extends Omit<Income, "id"> {}
 
+// Type Expense
+export interface Expense {
+  id: number;
+
+  description: string;
+
+  amount: number;
+
+  monthYear: string;
+
+  categoryId: number;
+
+  accountId: number;
+}
+
+export interface InputExpense extends Omit<Expense, "id"> {}
+
 export default Account;

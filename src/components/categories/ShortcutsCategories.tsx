@@ -6,7 +6,7 @@ import { router } from "expo-router";
 function ShortcutsCategories() {
   return (
     <View style={styles.container}>
-      <Pressable onPress={() => router.push('/categories/create/')}>
+      <Pressable onPress={() => router.push('/transactions/addExpenses/')}>
         <View style={styles.icon}>
           <View style={styles.bgIcon}>
             <MaterialCommunityIcons name="cash-minus" size={20} color="#FFD5F8" />

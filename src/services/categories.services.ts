@@ -2,6 +2,7 @@ import connectDatabase from "@/lib/datasource";
 import Category, { InputCategory } from "@/types/categories";
 import { SQLiteDatabase } from "expo-sqlite";
 import ActivitiesServices from "./activities.services";
+import { InputExpense } from "@/types/accounts";
 
 class CategoriesService {
   db: SQLiteDatabase;
@@ -96,6 +97,30 @@ class CategoriesService {
         )
       })
     })
+  }
+
+  updateAmountCategory(id: number, newAmount: number) : Promise<null | true>{
+    return new Promise((resolve, reject) => {
+      this.db.transaction(tx => {
+        tx.executeSql(
+          `UPDATE Category
+            SET currentAmount = ?
+            WHERE id = ?`,
+          [newAmount, id],
+          (_, result) => {
+            if (result.rowsAffected > 0) {
+              resolve(true);
+            } else {
+              resolve(null)
+            }
+          },
+          (_, error) => {
+            reject(error);
+            return true;
+          }
+        );
+      });
+    });
   }
 
   getCategory(id: number) {
