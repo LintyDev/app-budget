@@ -1,20 +1,25 @@
 import globalStyles from "@/styles/globalStyles";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { router } from "expo-router";
+import { useAppSelector } from "@/hooks/redux.hooks";
 
 function ShortcutsMenu() {
+  const accounts = useAppSelector((state) => state.accounts);
   return (
     <View style={styles.container}>
-      <Pressable>
-        <View style={styles.icon}>
-          <View style={styles.bgIcon}>
-            <MaterialCommunityIcons name="cash-minus" size={20} color="#FFD5F8" />
+      {accounts[0].countCategories > 0 && 
+        <Pressable onPress={() => router.push('/transactions/addExpenses')}>
+          <View style={styles.icon}>
+            <View style={styles.bgIcon}>
+              <MaterialCommunityIcons name="cash-minus" size={20} color="#FFD5F8" />
+            </View>
+            <Text style={globalStyles.text}>Dépenses</Text>
           </View>
-          <Text style={globalStyles.text}>Dépenses</Text>
-        </View>
-      </Pressable>
-
-      <Pressable>
+        </Pressable>
+      }
+      
+      <Pressable onPress={() => router.push('/transactions/addIncomes')}>
         <View style={styles.icon}>
           <View style={styles.bgIcon}>
             <MaterialCommunityIcons name="cash-plus" size={20} color="#FFD5F8" />
@@ -23,7 +28,7 @@ function ShortcutsMenu() {
         </View>
       </Pressable>
 
-      <Pressable>
+      <Pressable  onPress={() => router.push('/categories/create/')}>
         <View style={styles.icon}>
           <View style={styles.bgIcon}>
             <MaterialCommunityIcons name="wallet-plus" size={20} color="#FFD5F8" />
