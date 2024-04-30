@@ -26,6 +26,10 @@ const globalStyles = StyleSheet.create({
   },
   textGreen: {
     color: "#94C1B2"
+  },
+  flexRow: {
+    flexDirection: 'row',
+    alignItems: 'center'
   }
 });
 
