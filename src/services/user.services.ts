@@ -50,6 +50,24 @@ class UserService {
     });
    });
   }
+
+  // templateFunction() {
+  //   return new Promise((resolve, reject) => {
+  //     this.db.transaction(tx => {
+  //       tx.executeSql(
+  //         ``,
+  //         [],
+  //         (_, result) => {
+            
+  //         },
+  //         (_, error) => {
+  //           reject(error);
+  //           return true;
+  //         }
+  //       );
+  //     });
+  //   });
+  // }
 }
 
 export default UserService;
