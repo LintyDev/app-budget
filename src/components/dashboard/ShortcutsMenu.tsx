@@ -8,7 +8,7 @@ function ShortcutsMenu() {
   const accounts = useAppSelector((state) => state.accounts);
   return (
     <View style={styles.container}>
-      {accounts[0].countCategories > 0 && 
+      {accounts[0] && 
         <Pressable onPress={() => router.push('/transactions/addExpenses')}>
           <View style={styles.icon}>
             <View style={styles.bgIcon}>

@@ -14,7 +14,7 @@ function DashBoardHome() {
     <SafeAreaView style={globalStyles.container}>
       <Header />
       <Accounts />
-      {accounts[0].id && <ShortcutsMenu />}
+      {accounts[0] && <ShortcutsMenu />}
       <RecentActivities />
     </SafeAreaView>
   );
