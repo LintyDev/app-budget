@@ -1,5 +1,5 @@
 import connectDatabase from "@/lib/datasource";
-import Account, { AccountState, InputAccount, InputExpense, InputIncome } from "@/types/accounts";
+import Account, { AccountState, Expense, Income, InputAccount, InputExpense, InputIncome } from "@/types/accounts";
 import * as SQLite from "expo-sqlite";
 import ActivitiesServices from "./activities.services";
 import { useAppSelector } from "@/hooks/redux.hooks";
@@ -215,6 +215,29 @@ class AccountsService {
             return true;
           }
         )
+      });
+    });
+  }
+
+  getExpensesByCatId(catId: number) : Promise<null | Expense[]> {
+    return new Promise((resolve, reject) => {
+      this.db.transaction(tx => {
+        tx.executeSql(
+          `SELECT * FROM Expense
+            WHERE categoryId = ?`,
+          [catId],
+          (_, result) => {
+            if (result.rows.length > 0) {
+              resolve(result.rows._array);
+            } else {
+              resolve(null);
+            }
+          },
+          (_, error) => {
+            reject(error);
+            return true;
+          }
+        );
       });
     });
   }

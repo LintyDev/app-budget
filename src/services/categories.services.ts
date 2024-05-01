@@ -1,8 +1,9 @@
 import connectDatabase from "@/lib/datasource";
-import Category, { InputCategory } from "@/types/categories";
+import Category, { CategoryWithExpenses, InputCategory } from "@/types/categories";
 import { SQLiteDatabase } from "expo-sqlite";
 import ActivitiesServices from "./activities.services";
-import { InputExpense } from "@/types/accounts";
+import { Expense, InputExpense } from "@/types/accounts";
+import AccountsService from "./accounts.services";
 
 class CategoriesService {
   db: SQLiteDatabase;
@@ -123,8 +124,29 @@ class CategoriesService {
     });
   }
 
-  getCategory(id: number) {
-
+  getCategory(id: number) : Promise<null | CategoryWithExpenses> {
+    return new Promise((resolve, reject) => {
+      this.db.transaction(tx => {
+        tx.executeSql(
+          `SELECT * FROM Category
+            WHERE id = ?`,
+          [id],
+          async (_, result) => {
+            if (result.rows.length > 0) {
+              const category = result.rows.item(0) as Category;
+              // const getExpense = await new AccountsService().getExpensesByCatId(catId);
+              resolve({...category, expenses: null});
+            } else {
+              resolve(null);
+            }
+          },
+          (_, error) => {
+            reject(error);
+            return true;
+          }
+        );
+      });
+    });
   }
 }
 
