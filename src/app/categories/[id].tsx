@@ -1,7 +1,6 @@
 import GoBack from "@/components/common/GoBack";
 import { useAppSelector } from "@/hooks/redux.hooks";
 import { hexToRGB } from "@/lib/common";
-import AccountsService from "@/services/accounts.services";
 import CategoriesService from "@/services/categories.services";
 import globalStyles from "@/styles/globalStyles";
 import { CategoryWithExpenses } from "@/types/categories";
@@ -11,7 +10,8 @@ import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 import { ProgressChart } from "react-native-chart-kit";
 import { AbstractChartConfig } from "react-native-chart-kit/dist/AbstractChart";
 import { FontAwesome5, AntDesign, FontAwesome6 } from '@expo/vector-icons';
-import ListActivities from "@/components/dashboard/ListActivities";
+import ListExpenses from "@/components/transactions/ListExpenses";
+import ExpensesService from "@/services/expenses.services";
 
 function CategoryViewPage() {
   const { id } = useLocalSearchParams();
@@ -30,7 +30,7 @@ function CategoryViewPage() {
     const getCategory = async (id: number) => {
       try {
         const cat = await new CategoriesService().getCategory(id);
-        const expenses = await new AccountsService().getExpensesByCatId(id);
+        const expenses = await new ExpensesService().getMonthlyExpensesByCatId(id, account.currentMonthYear);
         if (cat) {
           cat.expenses = expenses;
         }
@@ -83,7 +83,7 @@ function CategoryViewPage() {
           <ProgressChart
             style={{ alignSelf: 'center' }}
             data={{
-              data: [0]
+              data: [(((data.amountAllocated - data.currentAmount) * 100) / data.amountAllocated) / 100]
             }}
             width={150}
             height={130}
@@ -96,11 +96,11 @@ function CategoryViewPage() {
       </View>
 
       <View style={[globalStyles.container, styles.containerExpenses]}>
-        <Text style={[globalStyles.text, {fontSize: 28}]}>Dépenses du mois :</Text>
+        <Text style={[globalStyles.text, { fontSize: 28 }]}>Dépenses du mois :</Text>
         <ScrollView>
           {data.expenses?.map((e) => {
             return (
-              <Text style={globalStyles.text} key={e.id}>{e.description}</Text>
+              <ListExpenses expenses={e} key={e.id} />
             )
           })}
         </ScrollView>
@@ -120,9 +120,9 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     justifyContent: 'center'
   },
-  containerExpenses:{
+  containerExpenses: {
     marginTop: 10
-  }
+  },
 });
 
 export default CategoryViewPage;
