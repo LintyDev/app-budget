@@ -27,6 +27,8 @@ export interface Income {
 
   monthYear: string;
 
+  date: string;
+
   amount: number;
 
   recursive: number;
@@ -45,6 +47,8 @@ export interface Expense {
   amount: number;
 
   monthYear: string;
+
+  date: string;
 
   categoryId: number;
 

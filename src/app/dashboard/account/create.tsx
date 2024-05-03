@@ -36,6 +36,7 @@ function CreateAccount() {
   const [dataIncome, setDataIncome] = useState<InputIncome>({
     description: '',
     monthYear: monthYear,
+    date: '',
     amount: 0,
     recursive: 0,
     accountId: 0

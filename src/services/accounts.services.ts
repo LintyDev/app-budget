@@ -7,9 +7,11 @@ import CategoriesService from "./categories.services";
 
 class AccountsService {
   db: SQLite.SQLiteDatabase;
+  date: Date;
 
   constructor() {
     this.db = connectDatabase();
+    this.date = new Date();
   }
 
   // ACCOUNT FUNCTION
@@ -156,9 +158,9 @@ class AccountsService {
     return new Promise((resolve, reject) => {
       this.db.transaction(tx => {
         tx.executeSql(
-          `INSERT INTO Income (description, monthYear, amount, recursive, accountId)
-            values (?, ?, ?, ?, ?)`,
-          [data.description, data.monthYear, data.amount, data.recursive, data.accountId],
+          `INSERT INTO Income (description, monthYear, date, amount, recursive, accountId)
+            values (?, ?, ?, ?, ?, ?)`,
+          [data.description, data.monthYear, this.date.toLocaleDateString(), data.amount, data.recursive, data.accountId],
           (_, result) => {
             console.log('result addIncome : ', result);
             if (result.rowsAffected > 0 && result.insertId) {
@@ -173,71 +175,6 @@ class AccountsService {
             return true;
           }
         )
-      });
-    });
-  }
-
-  // EXPENSE FUNCTION
-  addExpense(data: InputExpense, remainingAmountAcc: number, remainAmountCat: number) :  Promise<number | null> {
-    return new Promise((resolve, reject) => {
-      this.db.transaction(tx => {
-        tx.executeSql(
-          `INSERT INTO Expense (description, amount, monthYear, categoryId, accountId)
-            values (?, ?, ?, ?, ?)`,
-          [data.description, data.amount, data.monthYear, data.categoryId, data.accountId],
-          async (_, result) => {
-            if (result.rowsAffected > 0 && result.insertId) {
-              const date = new Date();
-              try {
-                const updateCat = await new CategoriesService().updateAmountCategory(data.categoryId, remainAmountCat);
-                const addActivitiesLogs = await new ActivitiesServices().addLog({
-                  type: 'transaction_expense',
-                  description: `Dépense : ${data.description}`,
-                  date: date.toLocaleDateString(),
-                  amount: data.amount,
-                  transaction_type: null,
-                  remainingAmount: remainingAmountAcc,
-                  categoryId: data.categoryId
-                });
-                if (addActivitiesLogs && updateCat) {
-                  resolve(result.insertId);
-                }
-                resolve(null);
-              } catch (error) {
-                reject(error);
-              }
-            } else {
-              resolve(null);
-            }
-          },
-          (_, error) => {
-            reject(error);
-            return true;
-          }
-        )
-      });
-    });
-  }
-
-  getExpensesByCatId(catId: number) : Promise<null | Expense[]> {
-    return new Promise((resolve, reject) => {
-      this.db.transaction(tx => {
-        tx.executeSql(
-          `SELECT * FROM Expense
-            WHERE categoryId = ?`,
-          [catId],
-          (_, result) => {
-            if (result.rows.length > 0) {
-              resolve(result.rows._array);
-            } else {
-              resolve(null);
-            }
-          },
-          (_, error) => {
-            reject(error);
-            return true;
-          }
-        );
       });
     });
   }
