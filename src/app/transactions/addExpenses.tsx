@@ -12,6 +12,7 @@ import { useState } from "react";
 import { InputExpense } from "@/types/accounts";
 import AccountsService from "@/services/accounts.services";
 import { updateAccount } from "@/features/accounts/accountsSlice";
+import ExpensesService from "@/services/expenses.services";
 
 function addExpenses() {
   const dispatch = useAppDispatch();
@@ -21,6 +22,7 @@ function addExpenses() {
     description: '',
     amount: 0,
     monthYear: accounts[0].currentMonthYear,
+    date: '',
     categoryId: 1,
     accountId: accounts[0].id
   });
@@ -56,7 +58,7 @@ function addExpenses() {
       const remainAccLogs = accounts[0].currentAmount - dataExpense.amount;
       const currAmountCat = data?.find((c) => c.id === dataExpense.categoryId);
       const newAmountCat = currAmountCat && currAmountCat?.currentAmount - dataExpense.amount;
-      const addExpense = await new AccountsService().addExpense(dataExpense, remainAccLogs, newAmountCat ?? 0);
+      const addExpense = await new ExpensesService().addExpense(dataExpense, remainAccLogs, newAmountCat ?? 0);
       await dispatch(updateAccount({
         id: 1, 
         data: {...accounts[0], currentAmount: (accounts[0].currentAmount - dataExpense.amount)}
