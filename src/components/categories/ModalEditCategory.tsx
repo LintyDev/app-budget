@@ -38,7 +38,7 @@ function ModalEditCategory(props: { category: CategoryWithExpenses, setCategory 
       const updateCat = await new CategoriesService().updateCategory({...dataCat, currentAmount: dataCat.amountAllocated - diff});
       if(updateCat) {
         // reset account
-        const updatedData : CategoryWithExpenses = {...category, ...dataCat, currentAmount: dataCat.amountAllocated - diff}
+        const updatedData : CategoryWithExpenses = {...category, ...dataCat, currentAmount: dataCat.amountAllocated - diff};
         setCategory(updatedData);
         await dispatch(getAccount());
         close(!open);

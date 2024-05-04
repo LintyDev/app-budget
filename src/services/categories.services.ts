@@ -5,9 +5,11 @@ import ActivitiesServices from "./activities.services";
 
 class CategoriesService {
   db: SQLiteDatabase;
+  date: Date;
 
   constructor() {
-    this.db = connectDatabase()
+    this.db = connectDatabase();
+    this.date = new Date();
   }
 
   addCategory(data: InputCategory) : Promise<number | null> {
@@ -155,8 +157,17 @@ class CategoriesService {
             SET name = ?, color = ?, amountAllocated = ?, currentAmount = ?, accountId = ?
             WHERE id = ?`,
           [data.name, data.color, data.amountAllocated, data.currentAmount, data.accountId, data.id],
-          (_, result) => {
+          async (_, result) => {
             if (result.rowsAffected > 0) {
+              const addLog = await new ActivitiesServices().addLog({
+                type: 'update_account',
+                description: `Modification : ${data.name}`,
+                date: this.date.toLocaleDateString(),
+                amount: null,
+                transaction_type: null,
+                remainingAmount: null,
+                categoryId: data.id
+              });
               resolve(true);
             } else {
               resolve(false);
