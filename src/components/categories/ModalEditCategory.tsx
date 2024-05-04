@@ -8,7 +8,7 @@ import ColorPicker, { HueSlider, Panel1, Preview } from "reanimated-color-picker
 import CategoriesService from "@/services/categories.services";
 import { getAccount } from "@/features/accounts/accountsSlice";
 
-function ModalEditCategory(props: { category: CategoryWithExpenses, setCategory : React.Dispatch<React.SetStateAction<CategoryWithExpenses | null>>, open: boolean, close: React.Dispatch<React.SetStateAction<boolean>> }) {
+function ModalEditCategory(props: { category: CategoryWithExpenses, setCategory: React.Dispatch<React.SetStateAction<CategoryWithExpenses | null>>, open: boolean, close: React.Dispatch<React.SetStateAction<boolean>> }) {
   const windowHeight = Dimensions.get('window').height;
   const heightModal = (75 * windowHeight) / 100;
   const account = useAppSelector((state) => state.accounts[0]);
@@ -23,7 +23,7 @@ function ModalEditCategory(props: { category: CategoryWithExpenses, setCategory 
     accountId: category.accountId
   });
   const diff = category.amountAllocated - category.currentAmount;
-  
+
   const onSelectedColor = ({ hex }: { hex: string }) => {
     setDataCat(prev => ({ ...prev, color: hex }));
   }
@@ -35,10 +35,10 @@ function ModalEditCategory(props: { category: CategoryWithExpenses, setCategory 
       return;
     }
     try {
-      const updateCat = await new CategoriesService().updateCategory({...dataCat, currentAmount: dataCat.amountAllocated - diff});
-      if(updateCat) {
+      const updateCat = await new CategoriesService().updateCategory({ ...dataCat, currentAmount: dataCat.amountAllocated - diff });
+      if (updateCat) {
         // reset account
-        const updatedData : CategoryWithExpenses = {...category, ...dataCat, currentAmount: dataCat.amountAllocated - diff};
+        const updatedData: CategoryWithExpenses = { ...category, ...dataCat, currentAmount: dataCat.amountAllocated - diff };
         setCategory(updatedData);
         await dispatch(getAccount());
         close(!open);
@@ -97,7 +97,13 @@ function ModalEditCategory(props: { category: CategoryWithExpenses, setCategory 
               />
             </View>
 
-            <View style={{ alignItems: "flex-end", marginTop: 20 }}>
+            <View style={[globalStyles.flexRow, { justifyContent: 'space-between', marginTop: 20 }]}>
+              <Pressable
+                style={[globalStyles.redButton]}
+                onPress={() => console.log('supprimer cat')}
+              >
+                <Text style={[globalStyles.text]}>Supprimer</Text>
+              </Pressable>
               <Pressable
                 style={[globalStyles.blueButton]}
                 onPress={submitUpdateCat}

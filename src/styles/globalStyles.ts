@@ -31,6 +31,13 @@ const globalStyles = StyleSheet.create({
     paddingHorizontal: 15,
     backgroundColor: "#9498c1",
   },
+  redButton: {
+    borderColor: "white",
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    backgroundColor: "#c19494",
+  },
   textGreen: {
     color: "#94C1B2"
   },
