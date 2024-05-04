@@ -11,6 +11,8 @@ import ListExpenses from "@/components/transactions/ListExpenses";
 import ExpensesService from "@/services/expenses.services";
 import ModalEditCategory from "@/components/categories/ModalEditCategory";
 import CategoryCard from "@/components/categories/CategoryCard";
+import ModalEditExpenses from "@/components/transactions/ModalEditExpenses";
+import { Expense } from "@/types/accounts";
 
 function CategoryViewPage() {
   const { id } = useLocalSearchParams();
@@ -18,6 +20,16 @@ function CategoryViewPage() {
   const [data, setData] = useState<CategoryWithExpenses | null>(null);
   const account = useAppSelector((state) => state.accounts[0]);
   const [modalEdit, setModalEdit] = useState<boolean>(false);
+  const [modalExpenseEdit, setModalExpenseEdit] = useState<boolean>(false);
+  const [currentExpense, setCurrentExpense] = useState<Expense>({
+    id: 0,
+    description: '',
+    amount: 0,
+    monthYear: '',
+    date: '',
+    categoryId: 0,
+    accountId: 0
+  });
 
   useEffect(() => {
     const getCategory = async (id: number) => {
@@ -64,12 +76,18 @@ function CategoryViewPage() {
         <ScrollView>
           {data.expenses?.map((e) => {
             return (
-              <ListExpenses expenses={e} key={e.id} />
+              <Pressable key={e.id} onPress={() => {
+                setCurrentExpense(e);
+                setModalExpenseEdit(!modalExpenseEdit);
+              }}>
+                <ListExpenses expenses={e} />
+              </Pressable>
             )
           })}
         </ScrollView>
       </View>
       <ModalEditCategory category={data} setCategory={setData} open={modalEdit} close={setModalEdit}/>
+      <ModalEditExpenses open={modalExpenseEdit} close={setModalExpenseEdit} expense={currentExpense} />
     </SafeAreaView>
   )
 }
