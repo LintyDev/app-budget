@@ -20,7 +20,8 @@ function addIncomes() {
     monthYear: account.currentMonthYear,
     amount: 0,
     recursive: 0,
-    accountId: 1
+    accountId: 1,
+    date: ''
   });
   const [isEnabled, setIsEnabled] = useState<boolean>(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);

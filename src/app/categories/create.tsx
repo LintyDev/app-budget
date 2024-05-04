@@ -1,5 +1,5 @@
 import GoBack from "@/components/common/GoBack";
-import { getAccount, updateAccount } from "@/features/accounts/accountsSlice";
+import { updateAccount } from "@/features/accounts/accountsSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux.hooks";
 import globalStyles from "@/styles/globalStyles";
 import { InputCategory } from "@/types/categories";

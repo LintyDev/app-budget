@@ -3,7 +3,6 @@ import { Expense } from "@/types/accounts";
 import { StyleSheet, Text, View } from "react-native";
 
 function ListExpenses({ expenses }: { expenses: Expense }) {
-  console.log(expenses);
 
   return (
     <View style={styles.container}>

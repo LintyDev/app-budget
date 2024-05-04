@@ -1,6 +1,6 @@
 import AccountsService from "@/services/accounts.services";
 import CategoriesService from "@/services/categories.services";
-import Account, { AccountState, InputAccount } from "@/types/accounts";
+import { AccountState, InputAccount } from "@/types/accounts";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState: AccountState[] = [];
