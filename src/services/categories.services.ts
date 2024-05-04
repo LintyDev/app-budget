@@ -2,8 +2,6 @@ import connectDatabase from "@/lib/datasource";
 import Category, { CategoryWithExpenses, InputCategory } from "@/types/categories";
 import { SQLiteDatabase } from "expo-sqlite";
 import ActivitiesServices from "./activities.services";
-import { Expense, InputExpense } from "@/types/accounts";
-import AccountsService from "./accounts.services";
 
 class CategoriesService {
   db: SQLiteDatabase;
@@ -138,6 +136,30 @@ class CategoriesService {
               resolve({...category, expenses: null});
             } else {
               resolve(null);
+            }
+          },
+          (_, error) => {
+            reject(error);
+            return true;
+          }
+        );
+      });
+    });
+  }
+
+  updateCategory(data: Category) : Promise<boolean>{
+    return new Promise((resolve, reject) => {
+      this.db.transaction(tx => {
+        tx.executeSql(
+          `UPDATE Category
+            SET name = ?, color = ?, amountAllocated = ?, currentAmount = ?, accountId = ?
+            WHERE id = ?`,
+          [data.name, data.color, data.amountAllocated, data.currentAmount, data.accountId, data.id],
+          (_, result) => {
+            if (result.rowsAffected > 0) {
+              resolve(true);
+            } else {
+              resolve(false);
             }
           },
           (_, error) => {

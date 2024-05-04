@@ -1,30 +1,23 @@
 import GoBack from "@/components/common/GoBack";
 import { useAppSelector } from "@/hooks/redux.hooks";
-import { hexToRGB } from "@/lib/common";
 import CategoriesService from "@/services/categories.services";
 import globalStyles from "@/styles/globalStyles";
 import { CategoryWithExpenses } from "@/types/categories";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
-import { ProgressChart } from "react-native-chart-kit";
-import { AbstractChartConfig } from "react-native-chart-kit/dist/AbstractChart";
-import { FontAwesome5, AntDesign, FontAwesome6 } from '@expo/vector-icons';
+import { Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
+import { FontAwesome6 } from '@expo/vector-icons';
 import ListExpenses from "@/components/transactions/ListExpenses";
 import ExpensesService from "@/services/expenses.services";
+import ModalEditCategory from "@/components/categories/ModalEditCategory";
+import CategoryCard from "@/components/categories/CategoryCard";
 
 function CategoryViewPage() {
   const { id } = useLocalSearchParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [data, setData] = useState<CategoryWithExpenses | null>(null);
   const account = useAppSelector((state) => state.accounts[0]);
-  const chartConfig: AbstractChartConfig = {
-    backgroundGradientFrom: "#1E2923",
-    backgroundGradientFromOpacity: 0,
-    backgroundGradientTo: "#08130D",
-    backgroundGradientToOpacity: 0,
-    useShadowColorFromDataset: false
-  }
+  const [modalEdit, setModalEdit] = useState<boolean>(false);
 
   useEffect(() => {
     const getCategory = async (id: number) => {
@@ -58,43 +51,14 @@ function CategoryViewPage() {
   }
 
   return (
-    <SafeAreaView style={globalStyles.container}>
-      <GoBack title={data.name} />
-      <View style={styles.containerRecap}>
-        <View style={{ width: '50%', justifyContent: 'space-between' }}>
-          <View>
-            <View style={[styles.containerName, { backgroundColor: hexToRGB(data.color, 0.2) }]}>
-              <Text style={[globalStyles.text, { fontSize: 20, alignSelf: 'center' }]}>{data.name}</Text>
-            </View>
-            <View style={[globalStyles.flexRow, { gap: 5, alignSelf: 'center', marginTop: 5 }]}>
-              <AntDesign name="calendar" size={16} color="white" />
-              <Text style={[globalStyles.text, { fontSize: 16 }]}>{account.currentMonthYear}</Text>
-              <Text style={[globalStyles.text, { fontSize: 16 }]}> - </Text>
-              <FontAwesome6 name="money-bill-transfer" size={16} color="white" />
-              <Text style={[globalStyles.text, { fontSize: 16 }]}>{data.amountAllocated}</Text>
-            </View>
-          </View>
-          <View style={[globalStyles.flexRow, { gap: 5, alignSelf: 'center' }]}>
-            <FontAwesome5 name="euro-sign" size={28} color="white" />
-            <Text style={[globalStyles.text, { fontSize: 30 }]}>{data.currentAmount}</Text>
-          </View>
-        </View>
-        <View style={{ width: '50%' }}>
-          <ProgressChart
-            style={{ alignSelf: 'center' }}
-            data={{
-              data: [(((data.amountAllocated - data.currentAmount) * 100) / data.amountAllocated) / 100]
-            }}
-            width={150}
-            height={130}
-            strokeWidth={25}
-            radius={52}
-            chartConfig={{ ...chartConfig, color: (opacity = 1) => hexToRGB(data.color, opacity) }}
-            hideLegend={true}
-          />
-        </View>
+    <SafeAreaView style={globalStyles.container} >
+      <View>
+        <GoBack title={data.name} />
+        <Pressable style={styles.iconEdit} onPress={() => setModalEdit(!modalEdit)}>
+          <FontAwesome6 name="edit" size={24} color="white" />
+        </Pressable>
       </View>
-
+      <CategoryCard data={data}/>
       <View style={[globalStyles.container, styles.containerExpenses]}>
         <Text style={[globalStyles.text, { fontSize: 28 }]}>Dépenses du mois :</Text>
         <ScrollView>
@@ -105,23 +69,19 @@ function CategoryViewPage() {
           })}
         </ScrollView>
       </View>
+      <ModalEditCategory category={data} setCategory={setData} open={modalEdit} close={setModalEdit}/>
     </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
-  containerRecap: {
-    flexDirection: 'row',
-    marginTop: 15,
-    height: 130
-  },
-  containerName: {
-    borderRadius: 5,
-    paddingVertical: 5,
-    justifyContent: 'center'
-  },
   containerExpenses: {
     marginTop: 10
+  },
+  iconEdit: {
+    position: 'absolute',
+    right: 5,
+    top: 4
   },
 });
 
