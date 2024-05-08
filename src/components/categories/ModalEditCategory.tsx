@@ -6,7 +6,10 @@ import Category, { CategoryWithExpenses } from "@/types/categories";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux.hooks";
 import ColorPicker, { HueSlider, Panel1, Preview } from "reanimated-color-picker";
 import CategoriesService from "@/services/categories.services";
-import { getAccount } from "@/features/accounts/accountsSlice";
+import { getAccount, updateAccount } from "@/features/accounts/accountsSlice";
+import ExpensesService from "@/services/expenses.services";
+import Account from "@/types/accounts";
+import { router } from "expo-router";
 
 function ModalEditCategory(props: { category: CategoryWithExpenses, setCategory: React.Dispatch<React.SetStateAction<CategoryWithExpenses | null>>, open: boolean, close: React.Dispatch<React.SetStateAction<boolean>> }) {
   const windowHeight = Dimensions.get('window').height;
@@ -14,6 +17,7 @@ function ModalEditCategory(props: { category: CategoryWithExpenses, setCategory:
   const account = useAppSelector((state) => state.accounts[0]);
   const dispatch = useAppDispatch();
   const { category, open, close, setCategory } = props;
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [dataCat, setDataCat] = useState<Category>({
     id: category.id,
     name: category.name,
@@ -45,6 +49,34 @@ function ModalEditCategory(props: { category: CategoryWithExpenses, setCategory:
       }
     } catch (error) {
       console.log('erreur');
+    }
+  }
+
+  const deleteCat = async () => {
+    const newAmount = account.currentAmount + (category.amountAllocated - category.currentAmount);
+      const updatedAccount : Account = {
+        ...account,
+        currentAmount: newAmount,
+        countCategories: account.countCategories - 1
+      };
+    try {
+      if (category.expenses) {
+        const deleteExpenses = await new ExpensesService().deleteExpenseByCategoryId(category.id);
+        if (!deleteExpenses) {
+          console.log('Unable to delete expenses');
+          return;
+        }
+      }
+      const deleteCat = await new CategoriesService().deleteCategory(category.id, category.name, (category.amountAllocated - category.currentAmount));
+      if(!deleteCat) {
+        console.log('unable to delete category');
+        return;
+      }
+
+      await dispatch(updateAccount({id: 1, data: updatedAccount}));
+      router.push('/categories/');
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -100,7 +132,7 @@ function ModalEditCategory(props: { category: CategoryWithExpenses, setCategory:
             <View style={[globalStyles.flexRow, { justifyContent: 'space-between', marginTop: 20 }]}>
               <Pressable
                 style={[globalStyles.redButton]}
-                onPress={() => console.log('supprimer cat')}
+                onPress={() => setDeleteModal(!deleteModal)}
               >
                 <Text style={[globalStyles.text]}>Supprimer</Text>
               </Pressable>
@@ -111,6 +143,34 @@ function ModalEditCategory(props: { category: CategoryWithExpenses, setCategory:
                 <Text style={[globalStyles.text]}>Modifier la catégorie</Text>
               </Pressable>
             </View>
+
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={deleteModal}
+              onRequestClose={() => {
+                setDeleteModal(!deleteModal);
+              }}
+            >
+              <View style={styles.deleteModalView}>
+                <View style={styles.deleteModalContent}>
+                  <Text style={styles.textDelete}>Voulez-vous vraiment supprimer la catégorie : {dataCat.name} ?</Text>
+                  <Text style={styles.subTextDelete}>Cela entrainera la suppression de toutes les dépenses du mois liés à cette catégorie.</Text>
+                  
+                  <View style={styles.buttonsDelete}>
+                    <Pressable style={globalStyles.greyButton} onPress={() => {
+                      setDeleteModal(!deleteModal);
+                    }}>
+                      <Text style={globalStyles.text}>Annuler</Text>
+                    </Pressable>
+
+                    <Pressable style={globalStyles.redButton} onPress={deleteCat}>
+                      <Text style={globalStyles.text}>Supprimer</Text>
+                    </Pressable>
+                  </View>
+                </View>
+              </View>
+            </Modal>
 
           </View>
         </View>
@@ -141,6 +201,41 @@ const styles = StyleSheet.create({
   },
   inputField: {
     gap: 15
+  },
+  deleteModalView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  deleteModalContent: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  textDelete:{
+    fontSize: 20,
+    textAlign: 'center'
+  },
+  subTextDelete:{
+    fontStyle: 'italic'
+  },
+  buttonsDelete: {
+    width: '100%',
+    marginTop: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   }
 });
 
