@@ -159,14 +159,46 @@ class CategoriesService {
           [data.name, data.color, data.amountAllocated, data.currentAmount, data.accountId, data.id],
           async (_, result) => {
             if (result.rowsAffected > 0) {
-              const addLog = await new ActivitiesServices().addLog({
-                type: 'update_account',
+              await new ActivitiesServices().addLog({
+                type: 'update_category',
                 description: `Modification : ${data.name}`,
                 date: this.date.toLocaleDateString(),
                 amount: null,
                 transaction_type: null,
                 remainingAmount: null,
                 categoryId: data.id
+              });
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          },
+          (_, error) => {
+            reject(error);
+            return true;
+          }
+        );
+      });
+    });
+  }
+
+  deleteCategory(id: number, name: string, amount: number) : Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.db.transaction(tx => {
+        tx.executeSql(
+          `DELETE FROM Category
+            WHERE id = ?`,
+          [id],
+          async (_, result) => {
+            if (result.rowsAffected > 0) {
+              await new ActivitiesServices().addLog({
+                type: 'delete_category',
+                description: `Suppression : ${name}`,
+                date: this.date.toLocaleDateString(),
+                amount: amount,
+                transaction_type: 'income_after_delete_cat',
+                remainingAmount: null,
+                categoryId: id
               });
               resolve(true);
             } else {
