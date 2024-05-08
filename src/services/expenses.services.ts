@@ -36,8 +36,9 @@ class ExpensesService {
                 });
                 if (addActivitiesLogs && updateCat) {
                   resolve(result.insertId);
+                } else {
+                  resolve(null);
                 }
-                resolve(null);
               } catch (error) {
                 reject(error);
               }
@@ -89,6 +90,29 @@ class ExpensesService {
               resolve(result.rows._array);
             } else {
               resolve(null);
+            }
+          },
+          (_, error) => {
+            reject(error);
+            return true;
+          }
+        );
+      });
+    });
+  }
+
+  deleteExpenseByCategoryId(catId: number) : Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.db.transaction(tx => {
+        tx.executeSql(
+          `DELETE FROM Expense
+            WHERE categoryId = ?`,
+          [catId],
+          (_, result) => {
+            if (result.rowsAffected > 0) {
+              resolve(true);
+            } else {
+              resolve(false);
             }
           },
           (_, error) => {
