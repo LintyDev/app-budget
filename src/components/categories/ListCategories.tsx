@@ -62,7 +62,7 @@ function ListCategories() {
               </View>
               <View style={style.containerCurrAmount}>
                 <FontAwesome5 name="euro-sign" size={20} color="white" />
-                <Text style={[globalStyles.text, style.textcurrAmount]}>{item.currentAmount}</Text>
+                <Text style={[globalStyles.text, style.textcurrAmount]}>{parseFloat(item.currentAmount.toFixed(2))}</Text>
               </View>
             </Pressable>
           </View>

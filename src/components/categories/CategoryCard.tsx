@@ -35,7 +35,7 @@ function CategoryCard({ data }: { data: Category }) {
         </View>
         <View style={[globalStyles.flexRow, { gap: 5, alignSelf: 'center' }]}>
           <FontAwesome5 name="euro-sign" size={28} color="white" />
-          <Text style={[globalStyles.text, { fontSize: 30 }]}>{data.currentAmount}</Text>
+          <Text style={[globalStyles.text, { fontSize: 30 }]}>{parseFloat(data.currentAmount.toFixed(2))}</Text>
         </View>
       </View>
       <View style={{ width: '50%' }}>
