@@ -9,19 +9,33 @@ function ListActivities(props: {activities : Log}) {
   // console.log(activities.id, activities);
 
   const typeAmount = activities.transaction_type?.split('_');
+  const amountToShow = activities.amount
   let icon : React.JSX.Element;
-  let iconBg : string = '';
+  let iconBg : string = 'transparent';
+  let colorAmount : string = 'transparent';
   switch (activities.type) {
     case 'add_account':
-      icon = <MaterialCommunityIcons name="wallet-plus" size={30} color="#FFD5F8" />;
+      icon = <MaterialCommunityIcons name="bank-plus" size={30} color="#FFD5F8" />;
       break;
     case 'transaction_income':
       iconBg = '#94C1B2';
+      colorAmount = '#94C1B2';
       icon = <MaterialCommunityIcons name="cash-plus" size={30} color="#FFD5F8" />;
       break;
     case 'transaction_expense':
       iconBg = '#C19494';
+      colorAmount = '#C19494';
       icon = <MaterialCommunityIcons name="cash-minus" size={30} color="#FFD5F8" />;
+      break;
+    case 'add_category':
+      iconBg = 'transparent';
+      colorAmount = 'transparent';
+      icon = <MaterialCommunityIcons name="wallet-plus" size={30} color="#FFD5F8" />;
+      break;
+    case 'delete_category':
+      iconBg = 'transparent';
+      colorAmount = '#94C1B2';
+      icon = <MaterialCommunityIcons name="delete" size={30} color="#FFD5F8" />;
       break;
     default:
       icon = <MaterialCommunityIcons name="information-outline" size={30} color="#FFD5F8" />;
@@ -39,8 +53,7 @@ function ListActivities(props: {activities : Log}) {
       </View>
 
       <View style={styles.amount}>
-        {activities.amount && 
-        <Text style={[globalStyles.text, styles.textAmount, {color: iconBg}]}>{typeAmount && typeAmount[0] == 'income' ? '+' : '-'} {activities.amount}</Text>}
+        <Text style={[styles.textAmount, {color: colorAmount}]}>{typeAmount && typeAmount[0] == 'income' ? '+' : '-'} {parseFloat(`${activities.amount?.toFixed(2)}`)}</Text>
       </View>
     </View>
   )
