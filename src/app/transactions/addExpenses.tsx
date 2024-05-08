@@ -45,8 +45,6 @@ function addExpenses() {
   }
 
   const submitExpense = async () => {
-    console.log(data);
-
     if (dataExpense.description === '' || dataExpense.amount === 0) {
       console.log('remplir les champs')
       return;

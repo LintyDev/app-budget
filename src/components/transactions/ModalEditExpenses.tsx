@@ -7,7 +7,6 @@ function ModalEditExpenses(props: { expense : Expense, open: boolean, close: Rea
   const { expense, open, close } = props;
   const windowHeight = Dimensions.get('window').height;
   const heightModal = (75 * windowHeight) / 100;
-  console.log(expense);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
