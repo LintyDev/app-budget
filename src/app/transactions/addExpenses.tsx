@@ -15,20 +15,20 @@ import { updateAccount } from "@/features/accounts/accountsSlice";
 import ExpensesService from "@/services/expenses.services";
 
 function addExpenses() {
+  const { data, isError, isLoading } = useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => await new CategoriesService().getCategories(),
+  });
   const dispatch = useAppDispatch();
   const accounts = useAppSelector((state) => state.accounts);
-  const [picker, setPicker] = useState<number>(1);
+  const [picker, setPicker] = useState<number>(data ? data[0].id : 1);
   const [dataExpense, setDataExpense] = useState<InputExpense>({
     description: '',
     amount: 0,
     monthYear: accounts[0].currentMonthYear,
     date: '',
-    categoryId: 1,
+    categoryId: data ? data[0].id : 1,
     accountId: accounts[0].id
-  });
-  const { data, isError, isLoading } = useQuery({
-    queryKey: ['categories'],
-    queryFn: async () => await new CategoriesService().getCategories(),
   });
   
 
@@ -45,7 +45,8 @@ function addExpenses() {
   }
 
   const submitExpense = async () => {
-    console.log(dataExpense)
+    console.log(data);
+
     if (dataExpense.description === '' || dataExpense.amount === 0) {
       console.log('remplir les champs')
       return;
@@ -54,6 +55,7 @@ function addExpenses() {
       console.log('peux pas ajouter de depense dans celui la');
       return;
     }
+
     try {
       const remainAccLogs = accounts[0].currentAmount - dataExpense.amount;
       const currAmountCat = data?.find((c) => c.id === dataExpense.categoryId);
