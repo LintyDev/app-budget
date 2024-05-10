@@ -29,6 +29,8 @@ function ModalEditExpenses(props: { expense : Expense, open: boolean, close: Rea
               </Pressable>
             </View>
 
+            
+
           </View>
         </View>
       </Modal>
