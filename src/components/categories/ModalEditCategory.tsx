@@ -61,7 +61,7 @@ function ModalEditCategory(props: { category: CategoryWithExpenses, setCategory:
       };
     try {
       if (category.expenses) {
-        const deleteExpenses = await new ExpensesService().deleteExpenseByCategoryId(category.id);
+        const deleteExpenses = await new ExpensesService().deleteExpenseByCategoryId(category.id, account.currentMonthYear);
         if (!deleteExpenses) {
           console.log('Unable to delete expenses');
           return;

@@ -157,13 +157,13 @@ class ExpensesService {
     });
   }
 
-  deleteExpenseByCategoryId(catId: number) : Promise<boolean> {
+  deleteExpenseByCategoryId(catId: number, monthYear: string) : Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.db.transaction(tx => {
         tx.executeSql(
           `DELETE FROM Expense
-            WHERE categoryId = ?`,
-          [catId],
+            WHERE categoryId = ? AND monthYear = ?`,
+          [catId, monthYear],
           (_, result) => {
             if (result.rowsAffected > 0) {
               resolve(true);
