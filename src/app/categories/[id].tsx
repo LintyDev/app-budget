@@ -87,7 +87,9 @@ function CategoryViewPage() {
         </ScrollView>
       </View>
       <ModalEditCategory category={data} setCategory={setData} open={modalEdit} close={setModalEdit}/>
-      <ModalEditExpenses open={modalExpenseEdit} close={setModalExpenseEdit} expense={currentExpense} />
+      {data.expenses && 
+        <ModalEditExpenses expense={currentExpense} category={data} open={modalExpenseEdit} close={setModalExpenseEdit} />
+      }
     </SafeAreaView>
   )
 }

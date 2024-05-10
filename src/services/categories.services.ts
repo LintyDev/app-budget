@@ -182,6 +182,30 @@ class CategoriesService {
     });
   }
 
+  updateCategoryForExpense(data: Category) : Promise<boolean>{
+    return new Promise((resolve, reject) => {
+      this.db.transaction(tx => {
+        tx.executeSql(
+          `UPDATE Category
+            SET name = ?, color = ?, amountAllocated = ?, currentAmount = ?, accountId = ?
+            WHERE id = ?`,
+          [data.name, data.color, data.amountAllocated, data.currentAmount, data.accountId, data.id],
+          async (_, result) => {
+            if (result.rowsAffected > 0) {
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          },
+          (_, error) => {
+            reject(error);
+            return true;
+          }
+        );
+      });
+    });
+  }
+
   deleteCategory(id: number, name: string, amount: number) : Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.db.transaction(tx => {

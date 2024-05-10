@@ -101,6 +101,62 @@ class ExpensesService {
     });
   }
 
+  updateExpense(data: Expense) : Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.db.transaction(tx => {
+        tx.executeSql(
+          `UPDATE Expense
+            SET description = ?, amount = ?
+            WHERE id = ?`,
+          [data.description, data.amount, data.id],
+          (_, result) => {
+            if (result.rowsAffected > 0) {
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          },
+          (_, error) => {
+            reject(error);
+            return true;
+          }
+        );
+      });
+    });
+  }
+
+  deleteExpenseById(id: number, amount: number, description: string) : Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.db.transaction(tx => {
+        tx.executeSql(
+          `DELETE FROM Expense
+            WHERE id = ?`,
+          [id],
+          async (_, result) => {
+            if (result.rowsAffected > 0) {
+              await new ActivitiesServices().addLog({
+                type: 'transaction_income',
+                description: `Suppréssion dépense : ${description.length > 12 ? `${description.substring(0, 12)}...`  : description}`,
+                date: this.date.toLocaleDateString(),
+                amount: amount,
+                transaction_type: 'income_after_delete_expense',
+                remainingAmount: null,
+                categoryId: null
+              });
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          },
+          (_, error) => {
+            reject(error);
+            return true;
+          }
+        );
+      });
+    });
+  }
+
   deleteExpenseByCategoryId(catId: number) : Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.db.transaction(tx => {
