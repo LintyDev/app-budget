@@ -8,7 +8,7 @@ import { Picker } from '@react-native-picker/picker';
 import { useAppDispatch, useAppSelector } from "@/hooks/redux.hooks";
 import { hexToRGB, numberDB } from "@/lib/common";
 import { MaterialIcons } from '@expo/vector-icons';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { InputExpense } from "@/types/accounts";
 import AccountsService from "@/services/accounts.services";
 import { updateAccount } from "@/features/accounts/accountsSlice";
@@ -31,6 +31,12 @@ function addExpenses() {
     accountId: accounts[0].id
   });
   
+  useEffect(() => {
+    if (data) {
+      setDataExpense(prev => ({...prev, categoryId: data[0].id}));
+      setPicker(data[0].id);
+    }
+  }, [data]);
 
   if (isLoading) {
     return (
