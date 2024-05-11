@@ -7,9 +7,12 @@ import { useAppDispatch } from "@/hooks/redux.hooks";
 import { userChecking } from "@/features/user/userSlice";
 import * as FileSystem from 'expo-file-system';
 import { getAccount } from "@/features/accounts/accountsSlice";
+import { AccountState } from "@/types/accounts";
+import { currentMonthYear } from "@/lib/common";
 
 function LoadingIndexPage() {
   const debug = false;
+  const monthYear = currentMonthYear();
 
   const dispatch = useAppDispatch();
 
@@ -44,10 +47,16 @@ function LoadingIndexPage() {
         return;
       }
 
-      // load accounts
-      console.log('load account');
-      await dispatch(getAccount());
-
+      // load accounts and check if new month
+      console.log('load account and check new month');
+      const account = await dispatch(getAccount());
+      const currentAccount = account.payload as unknown as AccountState[] | null;
+      if (currentAccount && currentAccount[0].currentMonthYear !== monthYear) {
+        console.log('new month');
+        router.replace('/newmonth/');
+        return;
+      }
+      
       // if ok go to dashboard
       router.replace('/dashboard/');
     } catch (error) {

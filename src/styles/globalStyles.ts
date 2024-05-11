@@ -5,6 +5,12 @@ const globalStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: "black",
   },
+  containerCentered: {
+    flex: 1,
+    backgroundColor: "black",
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   text: {
     color: "white",
   },

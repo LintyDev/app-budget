@@ -3,16 +3,15 @@ import { Log } from "@/types/logs";
 import { StyleSheet, Text, View } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-function ListActivities(props: {activities : Log}) {
+function ListActivities(props: { activities: Log }) {
   const { activities } = props;
   // for debug
   // console.log(activities.id, activities);
 
   const typeAmount = activities.transaction_type?.split('_');
-  const amountToShow = activities.amount
-  let icon : React.JSX.Element;
-  let iconBg : string = 'transparent';
-  let colorAmount : string = 'transparent';
+  let icon: React.JSX.Element;
+  let iconBg: string = 'transparent';
+  let colorAmount: string = 'transparent';
   switch (activities.type) {
     case 'add_account':
       icon = <MaterialCommunityIcons name="bank-plus" size={30} color="#FFD5F8" />;
@@ -37,13 +36,18 @@ function ListActivities(props: {activities : Log}) {
       colorAmount = '#94C1B2';
       icon = <MaterialCommunityIcons name="delete" size={30} color="#FFD5F8" />;
       break;
+    case 'new_month':
+      iconBg = 'transparent';
+      colorAmount = '#94C1B2';
+      icon = <MaterialCommunityIcons name="information-outline" size={30} color="#FFD5F8" />;
+      break;
     default:
       icon = <MaterialCommunityIcons name="information-outline" size={30} color="#FFD5F8" />;
       break;
   }
   return (
     <View style={styles.container}>
-      <View style={[styles.iconBg, {backgroundColor: iconBg}]}>
+      <View style={[styles.iconBg, { backgroundColor: iconBg }]}>
         {icon}
       </View>
 
@@ -53,7 +57,7 @@ function ListActivities(props: {activities : Log}) {
       </View>
 
       <View style={styles.amount}>
-        <Text style={[styles.textAmount, {color: colorAmount}]}>{typeAmount && typeAmount[0] == 'income' ? '+' : '-'} {parseFloat(`${activities.amount?.toFixed(2)}`)}</Text>
+        <Text style={[styles.textAmount, { color: colorAmount }]}>{typeAmount && typeAmount[0] == 'income' ? '+' : '-'} {parseFloat(`${activities.amount?.toFixed(2)}`)}</Text>
       </View>
     </View>
   )

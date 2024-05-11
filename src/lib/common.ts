@@ -14,3 +14,10 @@ export function hexToRGB(hex: string, alpha: string | number) {
 export function numberDB(n: string) {
   return +n.replace(',', '.');
 }
+
+export function currentMonthYear() : string {
+  const date = new Date();
+  const fullDate = date.toLocaleDateString().split('/');
+  const monthYear = fullDate[1] + '-' + fullDate[2];
+  return monthYear;
+}
