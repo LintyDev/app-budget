@@ -1,5 +1,5 @@
 import globalStyles from "@/styles/globalStyles";
-import { Dimensions, Keyboard, Modal, Pressable, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from "react-native";
+import { Alert, Dimensions, Keyboard, Modal, Pressable, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { useState } from "react";
 import Category, { CategoryWithExpenses } from "@/types/categories";
@@ -35,7 +35,11 @@ function ModalEditCategory(props: { category: CategoryWithExpenses, setCategory:
   const submitUpdateCat = async () => {
     const allocatedWithoutCurrent = account.allocatedRemainingAmount + category.amountAllocated;
     if (dataCat.amountAllocated > allocatedWithoutCurrent || dataCat.amountAllocated < diff) {
-      console.log('tu ne peux pas mettre ce montant');
+      Alert.alert('Le montant est trop grand!','', [{ text: 'Ok' }]);
+      return;
+    }
+    if (dataCat.name === '' || dataCat.amountAllocated === 0) {
+      Alert.alert('Remplir tous les champs','', [{ text: 'Ok' }]);
       return;
     }
     try {

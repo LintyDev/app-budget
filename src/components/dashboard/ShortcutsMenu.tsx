@@ -9,7 +9,13 @@ function ShortcutsMenu() {
   return (
     <View style={styles.container}>
       {accounts[0] && 
-        <Pressable onPress={() => router.push('/transactions/addExpenses')}>
+        <Pressable onPress={() => {
+          if (accounts[0].countCategories > 0) {
+            router.push('/transactions/addExpenses')
+          } else {
+            Alert.alert('Il faut d\'abord ajouter une catégorie','', [{ text: 'Ok' }]);
+          }
+        }}>
           <View style={styles.icon}>
             <View style={styles.bgIcon}>
               <MaterialCommunityIcons name="cash-minus" size={20} color="#FFD5F8" />

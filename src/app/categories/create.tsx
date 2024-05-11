@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux.hooks";
 import globalStyles from "@/styles/globalStyles";
 import { InputCategory } from "@/types/categories";
 import { useState } from "react";
-import { Keyboard, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from "react-native";
+import { Alert, Keyboard, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from "react-native";
 import ColorPicker, { HueSlider, Panel1, Preview } from "reanimated-color-picker";
 import {Picker} from '@react-native-picker/picker';
 import CategoriesService from "@/services/categories.services";
@@ -30,11 +30,11 @@ function CategoryCreatePage() {
   const submitCat = async () => {
     try {
       if (dataCat.amountAllocated && dataCat.amountAllocated > account.allocatedRemainingAmount) {
-        console.log('Tu ne peux pas ajouter autant dans cette catégorie!')
+        Alert.alert('Tu as dépassé le montant restant à allouer!','', [{ text: 'Ok' }]);
         return;
       }
-      if(dataCat.color === '') {
-        console.log('la couleur ne doit pas être vide!');
+      if(dataCat.color === '' || dataCat.name === '' || dataCat.currentAmount === 0) {
+        Alert.alert('Remplir tous les champs!','', [{ text: 'Ok' }]);
         return;
       }
       const addCat = await new CategoriesService().addCategory(dataCat);

@@ -1,6 +1,7 @@
 import GoBack from "@/components/common/GoBack";
 import globalStyles from "@/styles/globalStyles";
 import {
+  Alert,
   Keyboard,
   Pressable,
   SafeAreaView,
@@ -44,6 +45,10 @@ function CreateAccount() {
   });
 
   const submitAccount = async () => {
+    if (dataAccount.name === '' || dataIncome.description === '' || dataIncome.amount === 0) {
+      Alert.alert('Remplir tous les champs!','', [{ text: 'Ok' }]);
+      return;
+    }
     const check = checkRecursive ? 1 : 0;
     try {
       // create account

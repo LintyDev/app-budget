@@ -1,6 +1,6 @@
 import GoBack from "@/components/common/GoBack";
 import globalStyles from "@/styles/globalStyles";
-import { Pressable, SafeAreaView, StyleSheet, Switch, Text, TextInput, View } from "react-native";
+import { Alert, Pressable, SafeAreaView, StyleSheet, Switch, Text, TextInput, View } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import { useAppDispatch, useAppSelector } from "@/hooks/redux.hooks";
 import { hexToRGB, numberDB } from "@/lib/common";
@@ -28,6 +28,10 @@ function addIncomes() {
 
   const submitIncome = async () => {
     console.log(income);
+    if (income.description === '' || income.amount === 0) {
+      Alert.alert('Remplir tous les champs!','', [{ text: 'Ok' }]);
+      return;
+    }
     try {
       setIncome(prev => ({ ...prev, recursive: isEnabled ? 1 : 0 }));
       const updateIncome : InputIncome = {...income, recursive: isEnabled ? 1 : 0};

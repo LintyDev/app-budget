@@ -1,5 +1,5 @@
 import globalStyles from "@/styles/globalStyles";
-import { Dimensions, Keyboard, Modal, Pressable, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from "react-native";
+import { Alert, Dimensions, Keyboard, Modal, Pressable, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import Account, { Expense } from "@/types/accounts";
 import { useEffect, useState } from "react";
@@ -36,7 +36,12 @@ function ModalEditExpenses(props: { expense: Expense, open: boolean, close: Reac
     const amountWithoutExpense = category.currentAmount + expense.amount;
     const accountAmountWithoutExpense = account.currentAmount + expense.amount;
     if (data.amount > amountWithoutExpense) {
-      console.log('tu ne peux pas mettre ce prix');
+      Alert.alert('Le montant est trop grand!','', [{ text: 'Ok' }]);
+      return;
+    }
+    if (data.description === '' || data.amount === 0) {
+      Alert.alert('Remplir tous les champs','', [{ text: 'Ok' }]);
+      return;
     }
     try {
       const updateExpense = await new ExpensesService().updateExpense(data);

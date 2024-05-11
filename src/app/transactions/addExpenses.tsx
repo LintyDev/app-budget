@@ -3,7 +3,7 @@ import CategoriesService from "@/services/categories.services";
 import globalStyles from "@/styles/globalStyles";
 import { useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
-import { Keyboard, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from "react-native";
+import { Alert, Keyboard, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from "react-native";
 import { Picker } from '@react-native-picker/picker';
 import { useAppDispatch, useAppSelector } from "@/hooks/redux.hooks";
 import { hexToRGB, numberDB } from "@/lib/common";
@@ -52,11 +52,16 @@ function addExpenses() {
 
   const submitExpense = async () => {
     if (dataExpense.description === '' || dataExpense.amount === 0) {
-      console.log('remplir les champs')
+      Alert.alert('Remplir tous les champs','', [{ text: 'Ok' }]);
+      return;
+    }
+    const currentData = data && data.find((c) => c.id === picker);
+    if (currentData && currentData.currentAmount < dataExpense.amount) {
+      Alert.alert('Le montant est trop grand pour cette catégorie','', [{ text: 'Ok' }]);
       return;
     }
     if (data && data.find((c) => c.id === picker)?.currentAmount === 0) {
-      console.log('peux pas ajouter de depense dans celui la');
+      Alert.alert('Plus d\'argent disponible dans cette catégorie','', [{ text: 'Ok' }]);
       return;
     }
 
