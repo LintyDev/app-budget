@@ -1,5 +1,5 @@
 import globalStyles from "@/styles/globalStyles";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { useAppSelector } from "@/hooks/redux.hooks";
@@ -37,7 +37,11 @@ function ShortcutsMenu() {
         </View>
       </Pressable>
 
-      <Pressable>
+      <Pressable 
+        onPress={() => {
+            Alert.alert('Coming soon','', [{ text: 'Ok' }]);
+        }}
+      >
         <View style={styles.icon}>
           <View style={styles.bgIcon}>
             <MaterialCommunityIcons name="chart-bar" size={20} color="#FFD5F8" />
@@ -46,7 +50,11 @@ function ShortcutsMenu() {
         </View>
       </Pressable>
 
-      <Pressable>
+      <Pressable
+        onPress={() => {
+          Alert.alert('Coming soon','', [{ text: 'Ok' }]);
+        }}
+      >
         <View style={styles.icon}>
           <View style={styles.bgIcon}>
             <MaterialCommunityIcons name="bullseye-arrow" size={20} color="#FFD5F8" />
