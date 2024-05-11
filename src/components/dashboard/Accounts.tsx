@@ -67,7 +67,7 @@ function Accounts() {
                 </View>
                 <View style={[styleCard.iconText, styleCard.currentAmount]}>
                   <FontAwesome5 name="euro-sign" size={38} color="white" />
-                  <Text style={[styleCard.currentAmountText, globalStyles.text]}>{account.currentAmount}</Text>
+                  <Text style={[styleCard.currentAmountText, globalStyles.text]}>{parseFloat(account.currentAmount.toFixed(2))}</Text>
                 </View>
               </View>
 

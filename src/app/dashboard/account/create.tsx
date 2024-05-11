@@ -18,6 +18,7 @@ import { router } from "expo-router";
 import { useAppDispatch } from "@/hooks/redux.hooks";
 import { getAccount } from "@/features/accounts/accountsSlice";
 import ActivitiesServices from "@/services/activities.services";
+import { numberDB } from "@/lib/common";
 
 function CreateAccount() {
   const dispatch = useAppDispatch();
@@ -127,7 +128,7 @@ function CreateAccount() {
             inputMode={'numeric'}
             keyboardType={"number-pad"}
             onChangeText={(text) => {
-              setDataIncome(prev => ({...prev, amount: +text}));
+              setDataIncome(prev => ({...prev, amount: numberDB(text)}));
             }}
           />
           <View style={styles.viewRow}>

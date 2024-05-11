@@ -30,7 +30,8 @@ function addIncomes() {
     console.log(income);
     try {
       setIncome(prev => ({ ...prev, recursive: isEnabled ? 1 : 0 }));
-      const addIncome = await new AccountsService().addIncome(income);
+      const updateIncome : InputIncome = {...income, recursive: isEnabled ? 1 : 0};
+      const addIncome = await new AccountsService().addIncome(updateIncome);
       if (!addIncome) {
         console.log('erreur lors de lajout de l income');
         return;

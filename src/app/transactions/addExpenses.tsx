@@ -93,7 +93,7 @@ function addExpenses() {
           <View>
             <View style={{ alignItems: 'flex-start' }}>
               <View style={styles.miniBadge}>
-                <Text style={[globalStyles.text, styles.miniBadgeText]}>max : {data && data.find((c) => c.id === picker)?.currentAmount} €</Text>
+                <Text style={[globalStyles.text, styles.miniBadgeText]}>max : {data && data.find((c) => c.id === picker)?.currentAmount.toFixed(2)} €</Text>
               </View>
             </View>
             <TextInput

@@ -15,7 +15,7 @@ function HeaderCategories() {
 
       <View style={[globalStyles.flexRow, styles.badge]}>
         <FontAwesome5 name="euro-sign" size={16} color="white" />
-        <Text style={[globalStyles.text, styles.textRecap]}>{account[0].currentAmount}</Text>
+        <Text style={[globalStyles.text, styles.textRecap]}>{parseFloat(account[0].currentAmount.toFixed(2))}</Text>
       </View>
 
       <View style={[globalStyles.flexRow, styles.badge]}>
